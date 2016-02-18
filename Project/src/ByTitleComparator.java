@@ -1,5 +1,14 @@
 import java.util.Comparator;
 
+/**
+ * Comparator to sort a data structure by song title, if titles are the same,
+ * sorts by artist title. If title and artist are the same, sorts by track id
+ * 
+ * implements Comparator Interface
+ * 
+ * @author missionbit
+ *
+ */
 public class ByTitleComparator implements Comparator<Song> {
 
 	@Override

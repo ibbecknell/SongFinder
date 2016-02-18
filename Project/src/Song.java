@@ -3,20 +3,10 @@ import java.util.ArrayList;
 import org.json.simple.JSONObject;
 
 /**
- * A class to maintain data about a single song. Java object representation of a
- * JSON object with schema below.
+ * A class to maintain data about a single song.
  * 
- * @author srollins
+ * @author ibbecknell
  *
- */
-
-/*
- * { "artist":"The Primitives", "timestamp":"2011-09-07 12:34:34.851502",
- * "similars":[ [ "TROBUDC128F92F7F0B", 1 ], [ "TRWSCCK128F92F7EDB",
- * 0.98714400000000002 ] ], "tags":[ [ "1980s", "100" ], [ "80s", "33" ], [
- * "pop", "33" ], [ "alternative", "33" ] ], "track_id":"TRBDCAB128F92F7EE4",
- * "title":"Never Tell" }
- * 
  */
 
 public class Song {
@@ -67,7 +57,7 @@ public class Song {
 	/**
 	 * Return artist.
 	 * 
-	 * @return
+	 * @return artist
 	 */
 	public String getArtist() {
 		return this.artist;
@@ -109,18 +99,6 @@ public class Song {
 		return this.tags;
 	}
 
-	public boolean containsTag(String tag, ArrayList<ArrayList<String>> tags){
-		for(ArrayList<String> a : tags){
-			for(String t : a){
-				if(t.equals(tag)){
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-	
-	
 	/**
 	 * toString method for debugging
 	 */
