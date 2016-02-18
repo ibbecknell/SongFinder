@@ -4,7 +4,7 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 
 /**
- * writes a data structure to file in a specified format
+ * Utility class that writes a data structure to file in a specified format
  * 
  * @author missionbit
  *

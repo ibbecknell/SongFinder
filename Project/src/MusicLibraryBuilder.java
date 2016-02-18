@@ -11,7 +11,7 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 /**
- * builds the Music Library given an input path
+ * Utility class that builds the Music Library given an input path
  * 
  * @author ibbecknell
  *

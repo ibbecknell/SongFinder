@@ -1,4 +1,3 @@
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -72,7 +71,7 @@ public class MusicLibrary {
 	 * @param tagMap
 	 * @param song
 	 */
-	public void addSong(TreeMap<String, TreeSet<String>> tagMap, Song song) {
+	private static void addSong(TreeMap<String, TreeSet<String>> tagMap, Song song) {
 		for (ArrayList<String> a : song.getTags()) {
 			if (tagMap.get(a.get(0)) == null) {
 				tagMap.put(a.get(0), new TreeSet<String>());
