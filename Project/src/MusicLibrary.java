@@ -3,7 +3,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
@@ -24,7 +23,7 @@ public class MusicLibrary {
 	 * data structure to map song title -> artist name
 	 * -sorted by title
 	 */
-	private final TreeMap<String, String> titleMap;
+	private final TreeMap<String, TreeSet<Song>> titleMap;
 	
 	/**
 	 * data structure to map song -> artist name title
@@ -37,7 +36,7 @@ public class MusicLibrary {
 	 */
 	public MusicLibrary() {
 		this.tagMap = new TreeMap<String, TreeSet<String>>();
-		this.titleMap = new TreeMap<String, String>();
+		this.titleMap = new TreeMap<String, TreeSet<Song>>();
 		this.artistMap = new TreeMap<String, TreeSet<Song>>();
 
 	}
@@ -52,25 +51,17 @@ public class MusicLibrary {
 	 */
 	public void addSong(Song song) {
 
-		titleMap.put(song.getTitle(), song.getArtist());
+		if(!this.titleMap.containsKey(song.getTitle())){
+			titleMap.put(song.getTitle(), new TreeSet<Song>(new ByTitleComparator()));
+		}
+		titleMap.get(song.getTitle()).add(song);
 		
 		if (!this.artistMap.containsKey(song.getArtist())) {
 			this.artistMap.put(song.getArtist(), new TreeSet<Song>(new ByArtistComparator()));
 		}
 		artistMap.get(song.getArtist()).add(song);
 		
-//		if(this.tagMap!=null){
-			addSong(tagMap, song);
-//		}
-		
-//		if(!this.tagMap.containsKey()){
-//			this.tagMap.put(key, new ArrayList<String>());
-//		}
-//		this.tagMap.get(key).add(song.getTrackId());
-
-		
-
-//		this.artistMap.get(song.getArtist()).add(song.);
+		addSong(tagMap, song);
 	}
 	
 	public void addSong(TreeMap<String, TreeSet<String>> tagMap, Song song){
@@ -78,10 +69,7 @@ public class MusicLibrary {
 			if(tagMap.get(a.get(0)) == null){
 				tagMap.put(a.get(0), new TreeSet<String>());
 			}
-//			else if(tagMap.containsKey(a.get(0))){
 				tagMap.get(a.get(0)).add(song.getTrackId());
-//					return;
-//			} 
 		}
 		
 	}
@@ -89,25 +77,18 @@ public class MusicLibrary {
 	
 	public void writeToOutput(Path output, String order){
 		try (BufferedWriter writer = Files.newBufferedWriter(output)) {
-//			System.out.println("writing to : " + output.getFileName() + " ordered by " + order);
-//			System.out.println(order.compareTo( "artist") == 0);
 			if(order.compareTo( "artist") == 0){
-//				System.out.println("ordered by artist");
 				LibraryWriter.writeByArtist(writer, this.artistMap);
 			}
 			else if (order.compareTo( "title") == 0){
-//				System.out.println("ordered by title");
 				LibraryWriter.writeByTitle(writer, this.titleMap);
 			}
 			else if (order.compareTo( "tag") == 0){
-//				System.out.println("ordered by tag");
 				LibraryWriter.writeByTag(writer, this.tagMap);
 			}
-//			LibraryWriter.writeMap(order, writer);
-//			System.out.println("writing to : " + output.getFileName());
+
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.err.println("there was an issue writing to " + output.getFileName());
 		}
 		
 	}
@@ -120,7 +101,9 @@ public class MusicLibrary {
 	
 	public void titleMapToString(){
 		for(String i : titleMap.keySet()){
-			System.out.println(i + " - " + titleMap.get(i));
+			for(Song s : titleMap.get(i)){
+				System.out.println(s.getArtist() + " - " + i);
+			}
 		}
 	}
 	
@@ -136,48 +119,6 @@ public class MusicLibrary {
 	public String toString() {
 		return "MusicLibrary [tagMap : " + tagMap + "]\n"+" titleMap = " + titleMap + "]\n"+" artistMap = " + artistMap + "]";
 	}
-	
-	/**
-	 * Return the song associated with a unique tag.
-	 * 
-	 * @param tag
-	 *            to be searched for in the songMap
-	 * @return Song with specified trackId
-	 */
-//	public ArrayList<> getSongsByTag(String tag) {
-//		if (tagMap.get(tag) == null) {
-//			return null;
-//		}
-//		return tagMap.get(tag);
-//	}
-	
-	
-
-	/**
-	 * Return the song associated with a unique title.
-	 * 
-	 * @param title
-	 *            to be searched for in the songMap
-	 * @return Song with specified title
-//	 */
-//	public Song getSongByTitle(String title) {
-//		if (titleMap.get(title) == null) {
-//			return null;
-//		}
-//		return titleMap.get(title);
-//	}
-//
-//	
-//	/**
-//	 * Return a sorted set of all songs by a given artist.
-//	 * 
-//	 * @param artist
-//	 *            whose songs are being returned
-//	 * @return TreeSet of songs from given input
-//	 */
-//	public TreeSet<Song> getSongsByArtist(String artist) {
-//		return this.artistMap.get(artist);
-//	}
 	
 	public static void main (String[] args){
 //		Song s1 = new Song("artist1", "id1", "title1", [["id", 0.324], ["id2"]] , [["id", 0.324], ["id2"]]);
