@@ -1,5 +1,7 @@
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -90,7 +92,7 @@ public class MusicLibrary {
 	 *            that the library should be sorted by
 	 */
 	public void writeToOutput(Path output, String order) {
-		try (BufferedWriter writer = Files.newBufferedWriter(output)) {
+		try (BufferedWriter writer = Files.newBufferedWriter(output, Charset.forName("UTF-8"))) {
 			if (order.compareTo("artist") == 0) {
 				LibraryWriter.writeByArtist(writer, this.artistMap);
 			} else if (order.compareTo("title") == 0) {
