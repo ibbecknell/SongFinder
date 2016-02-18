@@ -51,17 +51,17 @@ public class MusicLibrary {
 	 */
 	public void addSong(Song song) {
 
-		if (!this.titleMap.containsKey(song.getTitle())) {
+		if (this.titleMap.get(song.getTitle()) == null) {
 			titleMap.put(song.getTitle(), new TreeSet<Song>(new ByTitleComparator()));
 		}
-		titleMap.get(song.getTitle()).add(song);
+		this.titleMap.get(song.getTitle()).add(song);
 
-		if (!this.artistMap.containsKey(song.getArtist())) {
+		if (this.artistMap.get(song.getArtist()) == null) {
 			this.artistMap.put(song.getArtist(), new TreeSet<Song>(new ByArtistComparator()));
 		}
-		artistMap.get(song.getArtist()).add(song);
+		this.artistMap.get(song.getArtist()).add(song);
 
-		addSong(tagMap, song);
+		addSong(this.tagMap, song);
 	}
 
 	/**
@@ -111,8 +111,8 @@ public class MusicLibrary {
 	 * Prints the library sorted by tag to console
 	 */
 	public void tagMapToString() {
-		for (String i : tagMap.keySet()) {
-			System.out.println(i + " : " + tagMap.get(i).toString());
+		for (String i : this.tagMap.keySet()) {
+			System.out.println(i + " : " + this.tagMap.get(i).toString());
 		}
 	}
 
@@ -120,8 +120,8 @@ public class MusicLibrary {
 	 * Prints the library sorted by title to console
 	 */
 	public void titleMapToString() {
-		for (String i : titleMap.keySet()) {
-			for (Song s : titleMap.get(i)) {
+		for (String i : this.titleMap.keySet()) {
+			for (Song s : this.titleMap.get(i)) {
 				System.out.println(s.getArtist() + " - " + i);
 			}
 		}
@@ -131,8 +131,8 @@ public class MusicLibrary {
 	 * Prints the library sorted by Artist name to console
 	 **/
 	public void artistMapToString() {
-		for (String i : artistMap.keySet()) {
-			for (Song s : artistMap.get(i)) {
+		for (String i : this.artistMap.keySet()) {
+			for (Song s : this.artistMap.get(i)) {
 				System.out.println(i + " - " + s.getTitle());
 			}
 		}
@@ -143,14 +143,14 @@ public class MusicLibrary {
 	 */
 	@Override
 	public String toString() {
-		return "MusicLibrary [tagMap : " + tagMap + "]\n" + " titleMap = " + titleMap + "]\n" + " artistMap = "
-				+ artistMap + "]";
+		return "MusicLibrary [tagMap : " + this.tagMap + "]\n" + " titleMap = " + this.titleMap + "]\n" + " artistMap = "
+				+ this.artistMap + "]";
 	}
 
 	/**
 	 * main driver
 	 * 
-	 * @param args
+	 * @param args to be debugged
 	 */
 	public static void main(String[] args) {
 		// Song s1 = new Song("artist1", "id1", "title1", [["id", 0.324],

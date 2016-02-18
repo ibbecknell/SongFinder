@@ -10,11 +10,15 @@ import java.nio.file.Paths;
 public class Driver {
 
 	/**
-	 * instantiation/initialization of given flags
+	 * initialization of given flags
 	 */
 	public static final String INPUT_FLAG = "-input";
 	public static final String OUTPUT_FLAG = "-output";
 	public static final String ORDER_FLAG = "-order";
+
+	public static final String ORDER_BY_ARTIST = "artist";
+	public static final String ORDER_BY_TITLE = "title";
+	public static final String ORDER_BY_TAG = "tag";
 
 	/**
 	 * Main method to begin building the music library and create the text file
@@ -38,9 +42,11 @@ public class Driver {
 
 				Path inputPath = Paths.get(input);
 				MusicLibraryBuilder.traverseDirectory(inputPath, library);
-
-				Path outputPath = Paths.get(output);
-				library.writeToOutput(outputPath, order);
+				if (order.compareTo(ORDER_BY_ARTIST) == 0 || order.compareTo(ORDER_BY_TITLE) == 0
+						|| order.compareTo(ORDER_BY_TAG) == 0) {
+					Path outputPath = Paths.get(output);
+					library.writeToOutput(outputPath, order);
+				}
 
 			}
 		}

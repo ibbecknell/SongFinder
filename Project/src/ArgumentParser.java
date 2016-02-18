@@ -123,9 +123,6 @@ public class ArgumentParser {
 		return argumentMap.get(flag);
 	}
 
-	// TODO Consider adding:
-	// public String getOrDefault(String flag, String defaultValue)
-	// (uses argumentMap.getOrDefault())
 
 	/**
 	 * Converts the flag and value pairs to a string
@@ -134,12 +131,12 @@ public class ArgumentParser {
 	public String toString() {
 		return argumentMap.toString();
 	}
-	
-	public static void main (String[] args){
-		String input = "-input input/lastfm_subset -output /Users/srollins/cs212/Project/results -order tag";
-		ArgumentParser argParser = new ArgumentParser(args);
-		System.out.println(argParser.toString());
-	}
+//	
+//	public static void main (String[] args){
+//		String input = "-input input/lastfm_subset -output /Users/srollins/cs212/Project/results -order tag";
+//		ArgumentParser argParser = new ArgumentParser(args);
+//		System.out.println(argParser.toString());
+//	}
 
 }
 

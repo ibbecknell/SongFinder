@@ -65,7 +65,7 @@ public class MusicLibraryBuilder {
 		} catch (IOException e) {
 			System.err.println("There was an error reading the file " + p.getFileName());
 		} catch (ParseException e) {
-			e.printStackTrace();
+			System.err.println("Could not parse the file");
 		}
 	}
 
