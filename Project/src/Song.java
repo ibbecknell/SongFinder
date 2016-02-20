@@ -50,6 +50,7 @@ public class Song {
 		this.artist = (String) object.get("artist");
 		this.trackId = (String) object.get("track_id");
 		this.title = (String) object.get("title");
+//TODO: process arrays to save just a list of tags.		
 		this.similars = (ArrayList<ArrayList<String>>) object.get("similars");
 		this.tags = ( ArrayList<ArrayList<String>> ) object.get("tags");
 	}
