@@ -5,6 +5,7 @@ import java.nio.charset.Charset;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -76,8 +77,9 @@ public class MusicLibraryBuilder {
 	 */
 
 	public static void main(String[] args) {
-		// Path input =
-		// Paths.get("/Users/missionbit/Desktop/cs212s16/repositories/ibbecknell-project/Project/input/lastfm_simple/TRABBBV128F42967D7.json");
-		// parseSongs(input);
+		MusicLibrary mL = new MusicLibrary();
+		Path input = Paths.get(
+				"/Users/missionbit/Desktop/cs212s16/repositories/ibbecknell-project/Project/input/lastfm_simple/TRABBBV128F42967D7.json");
+		parseSongs(input, mL);
 	}
 }

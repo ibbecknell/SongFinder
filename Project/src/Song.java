@@ -15,7 +15,9 @@ public class Song {
 	 * Declare appropriate instance variables.
 	 */
 	private String artist, trackId, title;
-	private  ArrayList<ArrayList<String>>  similars, tags;
+	private ArrayList<ArrayList<String>> similars;
+	private ArrayList<ArrayList<Object>> tags;
+	private ArrayList<String> tagList;
 
 	/**
 	 * Constructor.
@@ -31,12 +33,14 @@ public class Song {
 	 * @param tags-
 	 *            ArrayList of tags of the song
 	 */
-	public Song(String artist, String trackId, String title, ArrayList<ArrayList<String>>  similars, ArrayList<ArrayList<String>> tags) {
+	public Song(String artist, String trackId, String title, ArrayList<ArrayList<String>> similars,
+			ArrayList<ArrayList<Object>> tags) {
 		this.artist = artist;
 		this.trackId = trackId;
 		this.title = title;
 		this.similars = similars;
 		this.tags = tags;
+		buildList();
 	}
 
 	/**
@@ -50,9 +54,9 @@ public class Song {
 		this.artist = (String) object.get("artist");
 		this.trackId = (String) object.get("track_id");
 		this.title = (String) object.get("title");
-//TODO: process arrays to save just a list of tags.		
 		this.similars = (ArrayList<ArrayList<String>>) object.get("similars");
-		this.tags = ( ArrayList<ArrayList<String>> ) object.get("tags");
+		this.tags = (ArrayList<ArrayList<Object>>) object.get("tags");
+		buildList();
 	}
 
 	/**
@@ -87,7 +91,7 @@ public class Song {
 	 * 
 	 * @return ArrayList of similar songs
 	 */
-	public  ArrayList<ArrayList<String>>  getSimilars() {
+	public ArrayList<ArrayList<String>> getSimilars() {
 		return this.similars;
 	}
 
@@ -96,14 +100,46 @@ public class Song {
 	 * 
 	 * @return Arraylist of tags for a track
 	 */
-	public  ArrayList<ArrayList<String>>  getTags() {
+	public ArrayList<ArrayList<Object>> getTags() {
 		return this.tags;
+	}
+
+	/**
+	 * returns list of just tag names
+	 * 
+	 * @return tagList ArrayList
+	 */
+	public ArrayList<String> getTagList() {
+		return this.tagList;
+	}
+
+	/**
+	 * Builds an ArrayList of just tag names from the song data
+	 */
+	public void buildList() {
+		tagList = new ArrayList<String>();
+		for (ArrayList<Object> a : this.tags) {
+			this.tagList.add((String) a.get(0));
+		}
+
+	}
+
+	/**
+	 * helper method that prints the list of tags
+	 */
+	public void printList() {
+		for (String a : this.tagList) {
+			System.out.println(a);
+		}
 	}
 
 	/**
 	 * toString method for debugging
 	 */
 	public String toString() {
-		return "Song [TITLE: " + "'" + this.title + "'," + " ARTIST: " + "'" + this.artist + "'," + " TAGS: " + "'" + this.tags + "'," + " SIMILARS: " + "'" + this.similars + "',"  + " TRACKID: " + "'" + this.trackId + "'" + "]";
+		return "Song [TITLE: " + "'" + this.title + "'," + " ARTIST: " + "'" + this.artist + "'," + " TAGS: " + "'"
+				+ this.tags + "'," + " SIMILARS: " + "'" + this.similars + "'," + " TRACKID: " + "'" + this.trackId
+				+ "'" + ", TAGLIST: " + this.tagList + "]";
 	}
+
 }

@@ -123,7 +123,40 @@ public class ArgumentParser {
 		return argumentMap.get(flag);
 	}
 
+	/**
+	 * Checks if the user has valid input, output, and order values/paths
+	 * @param input path to check
+	 * @param output path to check
+	 * @param order flag to check
+	 * @return true if all three values are used
+	 */
+	public boolean hasValidValues(String input, String output, String order){
+		return argumentMap.get(input) != null && argumentMap.get(output) != null && argumentMap.get(order) != null;
+	}
+	
+	/**
+	 * Checks if the user has valid input, output, and order flags
+	 * @param input flag to check
+	 * @param output flag to check
+	 * @param order flag to check
+	 * @return true if all three flags are used
+	 */
+	public boolean hasValidFlags(String input, String output, String order){
+		return argumentMap.containsKey(input) && argumentMap.containsKey(output) && argumentMap.containsKey(order);
 
+	}
+	
+	/**
+	 * Checks if the user has valid order
+	 * @param artist order to check
+	 * @param title order to check
+	 * @param tag order to check
+	 * @return true if either of the three orders are given
+	 */
+	public boolean hasValidOrder(String order, String artist, String title, String tag){
+		return order.compareTo(artist) == 0 || order.compareTo(title) == 0
+				|| order.compareTo(tag) == 0;
+	}
 	/**
 	 * Converts the flag and value pairs to a string
 	 */
@@ -131,12 +164,6 @@ public class ArgumentParser {
 	public String toString() {
 		return argumentMap.toString();
 	}
-//	
-//	public static void main (String[] args){
-//		String input = "-input input/lastfm_subset -output /Users/srollins/cs212/Project/results -order tag";
-//		ArgumentParser argParser = new ArgumentParser(args);
-//		System.out.println(argParser.toString());
-//	}
 
 }
 

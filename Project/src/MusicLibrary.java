@@ -3,7 +3,6 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
@@ -72,14 +71,14 @@ public class MusicLibrary {
 	 * @param song
 	 */
 	private static void addSong(TreeMap<String, TreeSet<String>> tagMap, Song song) {
-		for (ArrayList<String> a : song.getTags()) {
-			if (tagMap.get(a.get(0)) == null) {
-				tagMap.put(a.get(0), new TreeSet<String>());
+		for (String a : song.getTagList()) {
+			if (tagMap.get(a) == null) {
+				tagMap.put(a, new TreeSet<String>());
 			}
-			tagMap.get(a.get(0)).add(song.getTrackId());
+			tagMap.get(a).add(song.getTrackId());
 		}
-
 	}
+
 
 	/**
 	 * Calls a method to write the library to a text file sorted by the given

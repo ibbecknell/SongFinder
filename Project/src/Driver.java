@@ -31,19 +31,17 @@ public class Driver {
 		MusicLibrary library = new MusicLibrary();
 		ArgumentParser argumentParser = new ArgumentParser(args);
 
-		if (argumentParser.hasFlag(INPUT_FLAG) && argumentParser.hasFlag(OUTPUT_FLAG)
-				&& argumentParser.hasFlag(ORDER_FLAG)) {
+		if (argumentParser.hasValidFlags(INPUT_FLAG, OUTPUT_FLAG, ORDER_FLAG)) {
 
-			if (argumentParser.hasValue(INPUT_FLAG) && argumentParser.hasValue(OUTPUT_FLAG)
-					&& argumentParser.hasValue(ORDER_FLAG)) {
+			if (argumentParser.hasValidValues(INPUT_FLAG, OUTPUT_FLAG, ORDER_FLAG)) {
 				String input = argumentParser.getValue(INPUT_FLAG);
 				String output = argumentParser.getValue(OUTPUT_FLAG);
 				String order = argumentParser.getValue(ORDER_FLAG);
 
 				Path inputPath = Paths.get(input);
 				MusicLibraryBuilder.traverseDirectory(inputPath, library);
-				if (order.compareTo(ORDER_BY_ARTIST) == 0 || order.compareTo(ORDER_BY_TITLE) == 0
-						|| order.compareTo(ORDER_BY_TAG) == 0) {
+				
+				if (argumentParser.hasValidOrder(order,ORDER_BY_ARTIST, ORDER_BY_TITLE, ORDER_BY_TAG )) {
 					Path outputPath = Paths.get(output);
 					library.writeToOutput(outputPath, order);
 				}
