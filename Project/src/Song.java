@@ -38,8 +38,11 @@ public class Song {
 		this.artist = artist;
 		this.trackId = trackId;
 		this.title = title;
+		
+//TODO: since you assign values in buildList you need not do this assignment here. Instead, pass the list into the buildList method.		
 		this.similars = similars;
 		this.tags = tags;
+//TODO: you should parse the similars list in the same way you parse the tags list.		
 		buildList();
 	}
 
@@ -54,6 +57,7 @@ public class Song {
 		this.artist = (String) object.get("artist");
 		this.trackId = (String) object.get("track_id");
 		this.title = (String) object.get("title");
+//TODO: see comments above. The code here should be something like this.similars = buildList(object.get("similars"));		
 		this.similars = (ArrayList<ArrayList<String>>) object.get("similars");
 		this.tags = (ArrayList<ArrayList<Object>>) object.get("tags");
 		buildList();
