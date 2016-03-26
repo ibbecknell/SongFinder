@@ -17,8 +17,38 @@ import org.json.simple.parser.ParseException;
  * @author ibbecknell
  *
  */
-public class MusicLibraryBuilder {
+public class MultithreadedMusicLibraryBuilder extends MusicLibraryBuilder {
 
+	private final WorkQueue workers;
+	
+	public MultithreadedMusicLibraryBuilder(int nThreads){
+		workers = new WorkQueue(nThreads);
+	}
+
+	public void shutdown(){
+		workers.shutdown();
+	}
+	
+	public void awaitTermination(){
+		workers.awaitTermination();
+	}
+	
+	private class Worker implements Runnable{
+		
+		private Path path;
+		private ThreadSafeMusicLibrary tSafeLibrary;
+		
+		public Worker(Path path, ThreadSafeMusicLibrary tSafeLibrary){
+			this.path = path;
+			this.tSafeLibrary = tSafeLibrary;
+		}
+		
+		@Override
+		public void run() {
+			parseSongs(path, tSafeLibrary);		
+		}
+		
+	}
 	/**
 	 * Helper method that recursively traverses a specified directory. Calls
 	 * parseSongs on JSON files.
@@ -28,22 +58,29 @@ public class MusicLibraryBuilder {
 	 * @param musicLibrary
 	 *            to be built
 	 */
-	public static void traverseDirectory(Path directory, MusicLibrary musicLibrary) {
+	public synchronized void traverseDirectory(Path directory, ThreadSafeMusicLibrary musicLibrary) {
 		try (DirectoryStream<Path> stream = Files.newDirectoryStream(directory)) {
 			for (Path file : stream) {
 				if (Files.isDirectory(file)) {
 					traverseDirectory(file, musicLibrary);
 				} else {
 					if (file.toString().toLowerCase().endsWith("json")) {
-						parseSongs(file, musicLibrary);
+//						System.out.println("found json file");
+						workers.execute(new Worker(file, musicLibrary));
 					}
 				}
 			}
+
 		} catch (IOException e) {
 			System.err.println("There was an error reading the file " + directory.getFileName());
 		}
+//		workers.queueSize();
+//		workers.shutdown();
+//		workers.awaitTermination();
+		
+		
 	}
-
+	
 	/**
 	 * Helper method that parses each song in a JSON File to calculate the
 	 * number of songs and number of similar songs each song has.
@@ -53,16 +90,13 @@ public class MusicLibraryBuilder {
 	 * @param musicLibrary
 	 *            to add song information to
 	 */
-	public static void parseSongs(Path p, MusicLibrary musicLibrary) {
+	public static void parseSongs(Path p, ThreadSafeMusicLibrary musicLibrary) {
 		JSONParser parser = new JSONParser();
-
+		JSONObject data = new JSONObject();
 		try (BufferedReader buffered_reader = Files.newBufferedReader(p, Charset.forName("UTF-8"))) {
 			String line = buffered_reader.readLine();
-//			buildLibrary(line, musicLibrary);
-			JSONObject data = (JSONObject) parser.parse(line);
-//			System.out.println("creating song");
+			data = (JSONObject) parser.parse(line);
 			Song song = new Song(data);
-//			System.out.println("adding song");
 			musicLibrary.addSong(song);
 
 		} catch (FileNotFoundException e) {
@@ -73,25 +107,15 @@ public class MusicLibraryBuilder {
 			System.err.println("Could not parse the file");
 		}
 	}
-	
-	public static void buildLibrary(String line, MusicLibrary musicLibrary) throws ParseException{
+
+	public synchronized void buildLibrary(String line, ThreadSafeMusicLibrary musicLibrary) throws ParseException{
 		JSONParser parser = new JSONParser();
 		JSONObject data = (JSONObject) parser.parse(line);
-//		System.out.println("creating song");
+		System.out.println("creating song");
 		Song song = new Song(data);
-//		System.out.println("adding song");
+		System.out.println("adding song");
 		musicLibrary.addSong(song);
+		System.out.println("song added");
 	}
-	/**
-	 * Driver method for debugging
-	 * 
-	 * @param args
-	 */
 
-	public static void main(String[] args) {
-		MusicLibrary mL = new MusicLibrary();
-		Path input = Paths.get(
-				"/Users/missionbit/Desktop/cs212s16/repositories/ibbecknell-project/Project/input/lastfm_simple/TRABBBV128F42967D7.json");
-		parseSongs(input, mL);
-	}
 }

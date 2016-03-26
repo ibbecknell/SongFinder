@@ -15,20 +15,20 @@ public class MusicLibrary {
 	/**
 	 * Data structure to map tag -> treeset of track ids with the tag
 	 */
-	private final TreeMap<String, TreeSet<String>> tagMap;
+	protected final TreeMap<String, TreeSet<String>> tagMap;
 
 	/**
 	 * data structure to map song title -> TreeSet of Songs sorted by the title
 	 * comparator -sorted by title
 	 */
-	private final TreeMap<String, TreeSet<Song>> titleMap;
+	protected final TreeMap<String, TreeSet<Song>> titleMap;
 
 	/**
 	 * data structure to map artist name -> TreeSet of Songs sorted by the
 	 * artist comparator
 	 * 
 	 */
-	private final TreeMap<String, TreeSet<Song>> artistMap;
+	protected final TreeMap<String, TreeSet<Song>> artistMap;
 
 	/**
 	 * Constructor to initialize Data Structures
@@ -70,7 +70,7 @@ public class MusicLibrary {
 	 * @param tagMap
 	 * @param song
 	 */
-	private static void addSong(TreeMap<String, TreeSet<String>> tagMap, Song song) {
+	public void addSong(TreeMap<String, TreeSet<String>> tagMap, Song song) {
 		for (String a : song.getTagList()) {
 			if (tagMap.get(a) == null) {
 				tagMap.put(a, new TreeSet<String>());
@@ -104,6 +104,38 @@ public class MusicLibrary {
 		}
 
 	}
+//	public void addAll(MusicLibrary other) {
+//		for (String word : other.artistMap.keySet()) {
+//			if (!this.artistMap.containsKey(word)) {
+//				this.artistMap.put(word, other.artistMap.get(word));
+//			}
+//		}
+//	}
+	/**
+	 * adds a local library to a global library
+	 * @param library to be added to the global one
+	 */
+//	TODO complete this to add one given local library to a global one
+//	public void addLibrary(MusicLibrary library){
+//		for (String key : library.artistMap.keySet()){
+//			if (this.artistMap.get(key) == null) {
+//				this.artistMap.put(key, library.artistMap.get(key));
+//			}
+////			this.artistMap.get(song.getArtist()).add(song);
+//		}
+//		for(String key : library.tagMap.keySet()){
+//			if(this.tagMap.get(key)==null){
+//				this.tagMap.put(key, library.tagMap.get(key));
+//			}
+//		}
+//		for(String key : library.titleMap.keySet()){
+//			if (this.titleMap.get(key) == null) {
+//				titleMap.put(key, library.titleMap.get(key));
+//			}
+////			this.titleMap.get(key).add(library.titleMap.get(key));
+//		}
+//	}
+	
 	/******************* METHODS FOR DEBUGGING ***********************/
 
 	/**

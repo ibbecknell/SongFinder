@@ -21,8 +21,10 @@ public class LibraryWriter {
 	 * @throws IOException
 	 */
 	public static void writeByArtist(BufferedWriter w, TreeMap<String, TreeSet<Song>> artistMap) throws IOException {
+//		System.out.println("writing by artist");
 		for (String i : artistMap.keySet()) {
 			for (Song s : artistMap.get(i)) {
+//				System.out.println(i + " - " + s.getTitle());
 				w.write(i + " - " + s.getTitle());
 				w.newLine();
 			}

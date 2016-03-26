@@ -146,6 +146,10 @@ public class ArgumentParser {
 
 	}
 	
+	public boolean hasThreadFlag(String thread){
+		return argumentMap.containsKey(thread);
+	}
+	
 	/**
 	 * Checks if the user has valid order
 	 * @param artist order to check
@@ -157,6 +161,14 @@ public class ArgumentParser {
 		return order.compareTo(artist) == 0 || order.compareTo(title) == 0
 				|| order.compareTo(tag) == 0;
 	}
+	public boolean isValidThread(String flag){
+		String strings = "[A-Za-z]+";
+		return flag.contains(strings);
+	}
+	public boolean hasValidThreadCount(String flag){
+		return isValidThread(flag) && hasValue(flag) && Integer.parseInt(getValue(flag))<=1000 && Integer.parseInt(getValue(flag))>=1;
+	}
+	
 	/**
 	 * Converts the flag and value pairs to a string
 	 */
