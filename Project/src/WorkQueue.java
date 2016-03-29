@@ -1,5 +1,10 @@
 import java.util.ArrayList;
 
+/**
+ * Class that implements a threadpool using a work queue
+ * @author ibbecknell
+ *
+ */
 public class WorkQueue
 {
     private final int nThreads;
@@ -7,23 +12,34 @@ public class WorkQueue
     private final ArrayList<Runnable> queue;
     private volatile boolean shutdown = false;
 
+    /**
+     * Constructor for work queue to begin a threadpool of a given number of threads
+     * @param nThreads
+     */
     public WorkQueue(int nThreads){
         this.nThreads = nThreads;
         queue = new ArrayList<Runnable>();
-        threads = new PoolWorker[nThreads];
+        threads = new PoolWorker[this.nThreads];
         
         
-        for (int i=0; i<nThreads; i++) {		
+        for (int i=0; i<this.nThreads; i++) {		
             threads[i] = new PoolWorker();
             threads[i].start();
         }
 
     }
-
+    
+/**
+ * Helper method that prints the size of the job queue
+ */
     public void queueSize(){
     	System.out.println("queue size: " + queue.size());
     }
     
+    /**
+     * Method to add jobs to the queue and notify the waiting thread to begin working
+     * @param r
+     */
     public void execute(Runnable r) {
         synchronized(queue) {
             queue.add(r);
@@ -31,6 +47,9 @@ public class WorkQueue
         }
     }
 
+    /**
+     * Method to shutdown the queue and notify all waiting threads
+     */
     public void shutdown(){
     	shutdown = true;
     	
@@ -39,28 +58,38 @@ public class WorkQueue
     	}
     }
     
+    /**
+     * Method to wait until all threads finish working
+     */
     public void awaitTermination(){
 //    	wait until all threads finish
     	for (Thread t : threads){
     		try{
     			t.join();
     		} catch(InterruptedException e){
-    			System.err.println("interrupted join..");;
+    			System.err.println("interrupted join..");
     		}
     	}
     }
     
+    /**
+     * Private inner class that runs executes a thread
+     * @author ibbecknell
+     *
+     */
     private class PoolWorker extends Thread {
-    	int i=0;
-        public void run() {
-            Runnable r = null;
+       /**
+        * Method to run a thread and check if the shutdown flag has been called.
+        * executes the work of parsing a file.
+        */
+    	public void run() {
+            Runnable r;
             while (true) {
                 synchronized(queue) {
                 	
                     while (queue.isEmpty() && !shutdown) {
                         try
                         {
-//                        	System.out.println("waiting job #" + i++);
                         	queue.wait();
                         }
                         catch (InterruptedException ignored)
@@ -70,25 +99,19 @@ public class WorkQueue
                     }
 
                     if(queue.isEmpty() && shutdown){
-//                    	System.out.println("breaking");
                     	break;
                     }
-//                    System.out.println(!queue.isEmpty() && shutdown || !queue.isEmpty() && !shutdown);
-                    if(!queue.isEmpty() && shutdown || !queue.isEmpty() && !shutdown){
-                    	r = (Runnable) queue.remove(0);
-                    }
+                    r = (Runnable) queue.remove(0);
                 }
 
                 // If we don't catch RuntimeException, 
                 // the pool could leak threads
                 try {
-//                	System.out.println("run thread...");
-//                	System.out.println("running #" + i++);
                     r.run();
                 }
                 catch (RuntimeException e) {
                     // You might want to log something here
-                	System.err.println("runtime exception on " + i);
+                	System.err.println("runtime exception on Thread " + Thread.currentThread().getId());
                 }
             }
         }

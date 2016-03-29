@@ -49,7 +49,6 @@ public class MusicLibrary {
 	 * 
 	 */
 	public void addSong(Song song) {
-
 		if (this.titleMap.get(song.getTitle()) == null) {
 			titleMap.put(song.getTitle(), new TreeSet<Song>(new ByTitleComparator()));
 		}
@@ -104,37 +103,6 @@ public class MusicLibrary {
 		}
 
 	}
-//	public void addAll(MusicLibrary other) {
-//		for (String word : other.artistMap.keySet()) {
-//			if (!this.artistMap.containsKey(word)) {
-//				this.artistMap.put(word, other.artistMap.get(word));
-//			}
-//		}
-//	}
-	/**
-	 * adds a local library to a global library
-	 * @param library to be added to the global one
-	 */
-//	TODO complete this to add one given local library to a global one
-//	public void addLibrary(MusicLibrary library){
-//		for (String key : library.artistMap.keySet()){
-//			if (this.artistMap.get(key) == null) {
-//				this.artistMap.put(key, library.artistMap.get(key));
-//			}
-////			this.artistMap.get(song.getArtist()).add(song);
-//		}
-//		for(String key : library.tagMap.keySet()){
-//			if(this.tagMap.get(key)==null){
-//				this.tagMap.put(key, library.tagMap.get(key));
-//			}
-//		}
-//		for(String key : library.titleMap.keySet()){
-//			if (this.titleMap.get(key) == null) {
-//				titleMap.put(key, library.titleMap.get(key));
-//			}
-////			this.titleMap.get(key).add(library.titleMap.get(key));
-//		}
-//	}
 	
 	/******************* METHODS FOR DEBUGGING ***********************/
 

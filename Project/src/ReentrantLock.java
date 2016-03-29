@@ -6,10 +6,6 @@ import java.util.HashMap;
  * 
  */
 public class ReentrantLock {
-
-	// Declare data members here!
-	private int readers = 0;
-	private int writers = 0;
 	// map id -> number of read locks held
 	private HashMap<Long, Integer> readLocks;
 	// map id -> number of write locks held
@@ -48,13 +44,17 @@ public class ReentrantLock {
 	 * @return
 	 */
 	public synchronized boolean tryLockRead() {
-		if (writers > 0 && !hasWrite()) {
-			return false;
+		if(writeLocks.size() == 0 ||( writeLocks.size() == 1 && writeLocks.containsKey(Thread.currentThread().getId()))){
+			if(readLocks.get(Thread.currentThread().getId()) == null){
+				readLocks.put(Thread.currentThread().getId(), 1);
+			} else {
+				Integer count = readLocks.get(Thread.currentThread().getId());
+				count++;
+				readLocks.put(Thread.currentThread().getId(), count);
+			}
+			return true;
 		}
-		readers++;
-		readLocks.put(Thread.currentThread().getId(), readers);
-		return true;
-
+		return false;
 	}
 
 	/**
@@ -64,12 +64,18 @@ public class ReentrantLock {
 	 * @return
 	 */
 	public synchronized boolean tryLockWrite() {
-		if (hasRead()) {
-			return false;
+		if (readLocks.size() == 1 && readLocks.containsKey(Thread.currentThread().getId()) || (writeLocks.size() == 0 ||( writeLocks.size() == 1 && writeLocks.containsKey(Thread.currentThread().getId())))) {
+			if(writeLocks.get(Thread.currentThread().getId()) == null){
+				writeLocks.put(Thread.currentThread().getId(), 1);
+			} else {
+				Integer count = writeLocks.get(Thread.currentThread().getId());
+				count++;
+				writeLocks.put(Thread.currentThread().getId(), count);
+			}
+			return true;
 		}
-		writers++;
-		writeLocks.put(Thread.currentThread().getId(), writers);
-		return true;
+		
+		return false;
 	}
 
 	/**
@@ -93,16 +99,17 @@ public class ReentrantLock {
 	 */
 	// http://tutorials.jenkov.com/java-concurrency/read-write-locks.html
 	public synchronized void unlockRead() {
+		Integer count = readLocks.get(Thread.currentThread().getId());
 		if(readLocks.containsKey(Thread.currentThread().getId())){
 			if (readLocks.get(Thread.currentThread().getId()) == 1) {
 				readLocks.remove(Thread.currentThread().getId());
 			} else {
-				readers--;
-				readLocks.put(Thread.currentThread().getId(), readers);
+				readLocks.put(Thread.currentThread().getId(), count - 1);
 			}
 			
-			notifyAll();
+			
 		}
+		notifyAll();
 	}
 
 	/**
@@ -125,14 +132,14 @@ public class ReentrantLock {
 	 */
 	// http://tutorials.jenkov.com/java-concurrency/read-write-locks.html
 	public synchronized void unlockWrite() {
+		Integer count = writeLocks.get(Thread.currentThread().getId());
 		if(writeLocks.containsKey(Thread.currentThread().getId())){
 			if (writeLocks.get(Thread.currentThread().getId()) == 1) {
 				writeLocks.remove(Thread.currentThread().getId());
 			} else {
-				writers--;
-				writeLocks.put(Thread.currentThread().getId(), writers);
+				writeLocks.put(Thread.currentThread().getId(), count -1);			
 			}
-			notifyAll();
 		}
+		notifyAll();
 	}
 }

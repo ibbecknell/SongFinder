@@ -5,14 +5,12 @@ import java.nio.charset.Charset;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
-
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 /**
- * Utility class that builds the Music Library given an input path
+ * Utility class that builds the Music Library concurrently, given an input path
  * 
  * @author ibbecknell
  *
@@ -20,35 +18,59 @@ import org.json.simple.parser.ParseException;
 public class MultithreadedMusicLibraryBuilder extends MusicLibraryBuilder {
 
 	private final WorkQueue workers;
-	
-	public MultithreadedMusicLibraryBuilder(int nThreads){
+
+	public MultithreadedMusicLibraryBuilder(int nThreads) {
 		workers = new WorkQueue(nThreads);
 	}
 
-	public void shutdown(){
+	/**
+	 * Method to shutdown the work queue and stop accepting new jobs
+	 */
+	public void shutdown() {
 		workers.shutdown();
 	}
-	
-	public void awaitTermination(){
+
+	/**
+	 * Method to wait until all threads finish working
+	 */
+	public void awaitTermination() {
 		workers.awaitTermination();
 	}
-	
-	private class Worker implements Runnable{
-		
+
+	/**
+	 * Private inner class to build a thread-safe music library
+	 * 
+	 * @author ibbecknell
+	 *
+	 */
+	private class Worker implements Runnable {
+
 		private Path path;
 		private ThreadSafeMusicLibrary tSafeLibrary;
-		
-		public Worker(Path path, ThreadSafeMusicLibrary tSafeLibrary){
+
+		/**
+		 * Constructor to implement runnable method of parsing song file
+		 * 
+		 * @param path
+		 *            of file to be parsed
+		 * @param tSafeLibrary
+		 *            to be built
+		 */
+		public Worker(Path path, ThreadSafeMusicLibrary tSafeLibrary) {
 			this.path = path;
 			this.tSafeLibrary = tSafeLibrary;
 		}
-		
+
+		/**
+		 * Overridden run method to parse a song file concurrently
+		 */
 		@Override
 		public void run() {
-			parseSongs(path, tSafeLibrary);		
+			parseSongs(path, tSafeLibrary);
 		}
-		
+
 	}
+
 	/**
 	 * Helper method that recursively traverses a specified directory. Calls
 	 * parseSongs on JSON files.
@@ -56,7 +78,7 @@ public class MultithreadedMusicLibraryBuilder extends MusicLibraryBuilder {
 	 * @param directory
 	 *            to traverse
 	 * @param musicLibrary
-	 *            to be built
+	 *            thread-safe library to be built
 	 */
 	public synchronized void traverseDirectory(Path directory, ThreadSafeMusicLibrary musicLibrary) {
 		try (DirectoryStream<Path> stream = Files.newDirectoryStream(directory)) {
@@ -65,7 +87,6 @@ public class MultithreadedMusicLibraryBuilder extends MusicLibraryBuilder {
 					traverseDirectory(file, musicLibrary);
 				} else {
 					if (file.toString().toLowerCase().endsWith("json")) {
-//						System.out.println("found json file");
 						workers.execute(new Worker(file, musicLibrary));
 					}
 				}
@@ -74,13 +95,9 @@ public class MultithreadedMusicLibraryBuilder extends MusicLibraryBuilder {
 		} catch (IOException e) {
 			System.err.println("There was an error reading the file " + directory.getFileName());
 		}
-//		workers.queueSize();
-//		workers.shutdown();
-//		workers.awaitTermination();
-		
-		
+
 	}
-	
+
 	/**
 	 * Helper method that parses each song in a JSON File to calculate the
 	 * number of songs and number of similar songs each song has.
@@ -88,7 +105,7 @@ public class MultithreadedMusicLibraryBuilder extends MusicLibraryBuilder {
 	 * @param p
 	 *            path given to extract Song information
 	 * @param musicLibrary
-	 *            to add song information to
+	 *            thread-safe library to add song information to
 	 */
 	public static void parseSongs(Path p, ThreadSafeMusicLibrary musicLibrary) {
 		JSONParser parser = new JSONParser();
@@ -106,16 +123,6 @@ public class MultithreadedMusicLibraryBuilder extends MusicLibraryBuilder {
 		} catch (ParseException e) {
 			System.err.println("Could not parse the file");
 		}
-	}
-
-	public synchronized void buildLibrary(String line, ThreadSafeMusicLibrary musicLibrary) throws ParseException{
-		JSONParser parser = new JSONParser();
-		JSONObject data = (JSONObject) parser.parse(line);
-		System.out.println("creating song");
-		Song song = new Song(data);
-		System.out.println("adding song");
-		musicLibrary.addSong(song);
-		System.out.println("song added");
 	}
 
 }

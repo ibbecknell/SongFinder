@@ -58,11 +58,8 @@ public class MusicLibraryBuilder {
 
 		try (BufferedReader buffered_reader = Files.newBufferedReader(p, Charset.forName("UTF-8"))) {
 			String line = buffered_reader.readLine();
-//			buildLibrary(line, musicLibrary);
 			JSONObject data = (JSONObject) parser.parse(line);
-//			System.out.println("creating song");
 			Song song = new Song(data);
-//			System.out.println("adding song");
 			musicLibrary.addSong(song);
 
 		} catch (FileNotFoundException e) {
@@ -73,15 +70,7 @@ public class MusicLibraryBuilder {
 			System.err.println("Could not parse the file");
 		}
 	}
-	
-	public static void buildLibrary(String line, MusicLibrary musicLibrary) throws ParseException{
-		JSONParser parser = new JSONParser();
-		JSONObject data = (JSONObject) parser.parse(line);
-//		System.out.println("creating song");
-		Song song = new Song(data);
-//		System.out.println("adding song");
-		musicLibrary.addSong(song);
-	}
+
 	/**
 	 * Driver method for debugging
 	 * 
