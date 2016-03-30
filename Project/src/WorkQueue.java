@@ -41,6 +41,7 @@ public class WorkQueue
      * @param r
      */
     public void execute(Runnable r) {
+//TODO: only add to queue if it is not shutdown.
         synchronized(queue) {
             queue.add(r);
             queue.notify();
