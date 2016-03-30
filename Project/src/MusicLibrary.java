@@ -69,7 +69,7 @@ public class MusicLibrary {
 	 * @param tagMap
 	 * @param song
 	 */
-	public void addSong(TreeMap<String, TreeSet<String>> tagMap, Song song) {
+	private void addSong(TreeMap<String, TreeSet<String>> tagMap, Song song) {
 		for (String a : song.getTagList()) {
 			if (tagMap.get(a) == null) {
 				tagMap.put(a, new TreeSet<String>());
@@ -77,7 +77,6 @@ public class MusicLibrary {
 			tagMap.get(a).add(song.getTrackId());
 		}
 	}
-
 
 	/**
 	 * Calls a method to write the library to a text file sorted by the given
@@ -103,7 +102,7 @@ public class MusicLibrary {
 		}
 
 	}
-	
+
 	/******************* METHODS FOR DEBUGGING ***********************/
 
 	/**
@@ -142,14 +141,15 @@ public class MusicLibrary {
 	 */
 	@Override
 	public String toString() {
-		return "MusicLibrary [tagMap : " + this.tagMap + "]\n" + " titleMap = " + this.titleMap + "]\n" + " artistMap = "
-				+ this.artistMap + "]";
+		return "MusicLibrary [tagMap : " + this.tagMap + "]\n" + " titleMap = " + this.titleMap + "]\n"
+				+ " artistMap = " + this.artistMap + "]";
 	}
 
 	/**
 	 * main driver
 	 * 
-	 * @param args to be debugged
+	 * @param args
+	 *            to be debugged
 	 */
 	public static void main(String[] args) {
 		// Song s1 = new Song("artist1", "id1", "title1", [["id", 0.324],
