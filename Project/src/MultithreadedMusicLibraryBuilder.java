@@ -71,6 +71,8 @@ public class MultithreadedMusicLibraryBuilder extends MusicLibraryBuilder {
 
 	}
 
+//TODO: create a non-recursive helper method that gets called from driver so that driver does 
+//not need to call shutdown and awaitTermination explicitly.
 	/**
 	 * Helper method that recursively traverses a specified directory. Calls
 	 * parseSongs on JSON files.
@@ -80,6 +82,7 @@ public class MultithreadedMusicLibraryBuilder extends MusicLibraryBuilder {
 	 * @param musicLibrary
 	 *            thread-safe library to be built
 	 */
+//TODO: should not be synchronized.	 
 	public synchronized void traverseDirectory(Path directory, ThreadSafeMusicLibrary musicLibrary) {
 		try (DirectoryStream<Path> stream = Files.newDirectoryStream(directory)) {
 			for (Path file : stream) {
