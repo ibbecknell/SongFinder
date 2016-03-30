@@ -50,9 +50,7 @@ public class Driver {
 						}
 						MultithreadedMusicLibraryBuilder musicLibraryBuilder = new MultithreadedMusicLibraryBuilder(
 								numThreads);
-						musicLibraryBuilder.traverseDirectory(inputPath, safeLibrary);
-						musicLibraryBuilder.shutdown();
-						musicLibraryBuilder.awaitTermination();
+						musicLibraryBuilder.traverse(inputPath, safeLibrary);
 						safeLibrary.writeToOutput(outputPath, order);
 					} else {
 						MusicLibraryBuilder.traverseDirectory(inputPath, library);
