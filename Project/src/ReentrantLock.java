@@ -44,6 +44,7 @@ public class ReentrantLock {
 	 * @return
 	 */
 	public synchronized boolean tryLockRead() {
+//TODO: allow a read lock to be granted to a thread that has one or more write locks.		
 		if(writeLocks.size() == 0 ||( writeLocks.size() == 1 && writeLocks.containsKey(Thread.currentThread().getId()))){
 			if(readLocks.get(Thread.currentThread().getId()) == null){
 				readLocks.put(Thread.currentThread().getId(), 1);
@@ -64,7 +65,9 @@ public class ReentrantLock {
 	 * @return
 	 */
 	public synchronized boolean tryLockWrite() {
-		if (readLocks.size() == 1 && readLocks.containsKey(Thread.currentThread().getId()) || (writeLocks.size() == 0 ||( writeLocks.size() == 1 && writeLocks.containsKey(Thread.currentThread().getId())))) {
+//TODO: (no readers and no writers) OR (there is a writer and that writer is me)		
+		if (readLocks.size() == 1 && readLocks.containsKey(Thread.currentThread().getId()) || 
+		(writeLocks.size() == 0 ||( writeLocks.size() == 1 && writeLocks.containsKey(Thread.currentThread().getId())))) {
 			if(writeLocks.get(Thread.currentThread().getId()) == null){
 				writeLocks.put(Thread.currentThread().getId(), 1);
 			} else {
