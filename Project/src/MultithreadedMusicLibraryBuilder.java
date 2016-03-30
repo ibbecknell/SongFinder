@@ -112,6 +112,7 @@ public class MultithreadedMusicLibraryBuilder extends MusicLibraryBuilder {
 		JSONObject data = new JSONObject();
 		try (BufferedReader buffered_reader = Files.newBufferedReader(p, Charset.forName("UTF-8"))) {
 			String line = buffered_reader.readLine();
+//TODO: use the parse version that takes as input the reader.			
 			data = (JSONObject) parser.parse(line);
 			Song song = new Song(data);
 			musicLibrary.addSong(song);
