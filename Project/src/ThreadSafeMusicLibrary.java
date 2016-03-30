@@ -1,20 +1,18 @@
 import java.nio.file.Path;
-import java.util.TreeMap;
-import java.util.TreeSet;
 
 /**
  * Maintains a thread-safe music library of several songs using reentrant locks.
  *
  */
 public class ThreadSafeMusicLibrary extends MusicLibrary {
-	
+
 	private ReentrantLock lock;
-	
-	public ThreadSafeMusicLibrary(){
+
+	public ThreadSafeMusicLibrary() {
 		super();
 		lock = new ReentrantLock();
 	}
-	
+
 	@Override
 	/**
 	 * Add a song to the library. Adds a reference to the song object to all
@@ -29,20 +27,6 @@ public class ThreadSafeMusicLibrary extends MusicLibrary {
 		super.addSong(song);
 		lock.unlockWrite();
 	}
-	
-	@Override
-	/**
-	 * Helper method that traverses a songs list of tags and adds each tag to
-	 * the map. Maps each tag to the track id of the songs with that tag.
-	 * 
-	 * @param tagMap
-	 * @param song
-	 */
-	public  void addSong(TreeMap<String, TreeSet<String>> tagMap, Song song) {
-		lock.lockWrite();
-		super.addSong(tagMap, song);
-		lock.unlockWrite();
-	}
 
 	@Override
 	/**
@@ -55,50 +39,49 @@ public class ThreadSafeMusicLibrary extends MusicLibrary {
 	 *            that the library should be sorted by
 	 */
 	public void writeToOutput(Path output, String order) {
-			lock.lockRead();
-			super.writeToOutput(output, order);
-			lock.unlockRead();
+		lock.lockRead();
+		super.writeToOutput(output, order);
+		lock.unlockRead();
 	}
-	
-	
+
 	/******************* METHODS FOR DEBUGGING ***********************/
-@Override
+	@Override
 	/**
 	 * Prints the library sorted by tag to console
 	 */
 	public void tagMapToString() {
 		lock.lockRead();
-		try{
+		try {
 			super.tagMapToString();
 		} finally {
 			lock.unlockRead();
 		}
 	}
-@Override
+
+	@Override
 	/**
 	 * Prints the library sorted by title to console
 	 */
 	public void titleMapToString() {
 		lock.lockRead();
-		try{
+		try {
 			super.titleMapToString();
 		} finally {
 			lock.unlockRead();
 		}
 	}
-@Override
+
+	@Override
 	/**
 	 * Prints the library sorted by Artist name to console
 	 **/
 	public void artistMapToString() {
 		lock.lockRead();
-		try{
+		try {
 			super.artistMapToString();
 		} finally {
 			lock.unlockRead();
 		}
 	}
-
-
 
 }
