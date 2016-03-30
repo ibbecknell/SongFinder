@@ -71,8 +71,21 @@ public class MultithreadedMusicLibraryBuilder extends MusicLibraryBuilder {
 
 	}
 
-//TODO: create a non-recursive helper method that gets called from driver so that driver does 
-//not need to call shutdown and awaitTermination explicitly.
+	/**
+	 * non-recursive helper method that gets called from driver so that driver
+	 * does not need to call shutdown and awaitTermination explicitly.
+	 * 
+	 * @param directory
+	 *            to be traversed
+	 * @param musicLibrary
+	 *            to be built
+	 */
+	public void traverse(Path directory, ThreadSafeMusicLibrary musicLibrary) {
+		traverseDirectory(directory, musicLibrary);
+		shutdown();
+		awaitTermination();
+	}
+
 	/**
 	 * Helper method that recursively traverses a specified directory. Calls
 	 * parseSongs on JSON files.
@@ -82,8 +95,7 @@ public class MultithreadedMusicLibraryBuilder extends MusicLibraryBuilder {
 	 * @param musicLibrary
 	 *            thread-safe library to be built
 	 */
-//TODO: should not be synchronized.	 
-	public synchronized void traverseDirectory(Path directory, ThreadSafeMusicLibrary musicLibrary) {
+	public void traverseDirectory(Path directory, ThreadSafeMusicLibrary musicLibrary) {
 		try (DirectoryStream<Path> stream = Files.newDirectoryStream(directory)) {
 			for (Path file : stream) {
 				if (Files.isDirectory(file)) {
@@ -114,9 +126,7 @@ public class MultithreadedMusicLibraryBuilder extends MusicLibraryBuilder {
 		JSONParser parser = new JSONParser();
 		JSONObject data = new JSONObject();
 		try (BufferedReader buffered_reader = Files.newBufferedReader(p, Charset.forName("UTF-8"))) {
-			String line = buffered_reader.readLine();
-//TODO: use the parse version that takes as input the reader.			
-			data = (JSONObject) parser.parse(line);
+			data = (JSONObject) parser.parse(buffered_reader);
 			Song song = new Song(data);
 			musicLibrary.addSong(song);
 
