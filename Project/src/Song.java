@@ -1,6 +1,8 @@
 import java.util.ArrayList;
 
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 /**
  * A class to maintain data about a single song.
@@ -91,6 +93,18 @@ public class Song {
 	public ArrayList<String> getTagList() {
 		return this.tagList;
 	}
+	
+	public JSONObject toJSON(Song song){
+		JSONParser parser = new JSONParser();
+		JSONObject newSong = null;
+		try {
+			newSong = (JSONObject) parser.parse(song.toString());
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return newSong;
+	}
 
 	/**
 	 * Builds an ArrayList of just similar track ids from the song data
@@ -101,6 +115,10 @@ public class Song {
 		for (ArrayList<Object> a : similars) {
 			this.simList.add((String) a.get(0));
 		}
+		return simList;
+	}
+	
+	public ArrayList<String> getSimList(){
 		return simList;
 	}
 	
@@ -125,6 +143,7 @@ public class Song {
 		}
 	}
 
+	
 	/**
 	 * toString method for debugging
 	 */

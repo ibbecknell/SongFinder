@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -20,6 +21,9 @@ public class Driver {
 	public static final String ORDER_BY_ARTIST = "artist";
 	public static final String ORDER_BY_TITLE = "title";
 	public static final String ORDER_BY_TAG = "tag";
+	
+	public static final String SEARCH_INPUT = "-searchInput";
+	public static final String SEARCH_OUTPUT = "-searchOutput";
 
 	/**
 	 * Main method to begin building the music library and create the text file
@@ -27,12 +31,14 @@ public class Driver {
 	 * @param args
 	 *            to be parsed to determine the order of the output, input file
 	 *            to be read, and output file to be written to
+	 * @throws EmptyFileException 
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws EmptyFileException {
 		int numThreads = 10;
 		ThreadSafeMusicLibrary safeLibrary = new ThreadSafeMusicLibrary();
 		MusicLibrary library = new MusicLibrary();
 		ArgumentParser argumentParser = new ArgumentParser(args);
+		QueryBuilder qBuilder = new QueryBuilder();
 
 		if (argumentParser.hasValidFlags(INPUT_FLAG, OUTPUT_FLAG, ORDER_FLAG)) {
 
@@ -56,11 +62,38 @@ public class Driver {
 						MusicLibraryBuilder.traverseDirectory(inputPath, library);
 						library.writeToOutput(outputPath, order);
 					}
+					if(argumentParser.hasFlag(SEARCH_INPUT)&& argumentParser.hasFlag(SEARCH_OUTPUT)){
+						String inputQuery = argumentParser.getValue(SEARCH_INPUT);
+//						System.out.println(inputQuery);
+						Path queryInputPath = Paths.get(inputQuery);
+						System.out.println(queryInputPath);
+						String outputQuery =  argumentParser.getValue(SEARCH_OUTPUT);
+						Path queryOutputPath = Paths.get(outputQuery);
+						System.out.println(queryOutputPath);
+//						TODO when you combine final methods to read queries, search and print output, move the empty file exception thrown in main 
+						qBuilder.readQueries(queryInputPath, library);
+//						library.artistMapToString();
+//						System.out.println(library.artistMap.containsKey("Busta Rhymes"));
+						
+//						library.searchByTitle("Que Vuelvas");
+//						library.getSimilarSongs();
+//						library.titleMapToString();
+						
+//						library.searchByTag("beyonce");
+						
+//						library.searchByArtist("Selena");
+//						library.getSimilarSongs();
+//						library.writeToJSON(queryOutputPath);
+//						System.out.println("artistMapCount: " + library.MapCount);
+						
+					}
 
 				}
-
+				
 			}
+			
 		}
+		
 		return;
 	}
 }

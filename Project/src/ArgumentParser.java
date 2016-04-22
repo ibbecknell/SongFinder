@@ -169,6 +169,10 @@ public class ArgumentParser {
 		return isValidThread(flag) && hasValue(flag) && Integer.parseInt(getValue(flag))<=1000 && Integer.parseInt(getValue(flag))>=1;
 	}
 	
+//	public boolean hasValidSearchInput(){
+//		
+//	}
+	
 	/**
 	 * Converts the flag and value pairs to a string
 	 */
