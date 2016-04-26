@@ -1,3 +1,5 @@
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -144,6 +146,11 @@ public class ArgumentParser {
 	public boolean hasValidFlags(String input, String output, String order){
 		return argumentMap.containsKey(input) && argumentMap.containsKey(output) && argumentMap.containsKey(order);
 
+	}
+	
+	public boolean hasValidSearchInput(String input){
+		Path p = Paths.get(input);
+		return p.toFile().exists();
 	}
 	
 	public boolean hasThreadFlag(String thread){

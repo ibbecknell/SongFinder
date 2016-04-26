@@ -57,6 +57,10 @@ public class Song {
 		this.tagList = buildTagList((ArrayList<ArrayList<Object>>) object.get("tags"));
 		this.simList = buildSimList((ArrayList<ArrayList<Object>>) object.get("similars"));
 	}
+	
+	public Song(){
+		
+	}
 
 	/**
 	 * Return artist.
@@ -94,18 +98,41 @@ public class Song {
 		return this.tagList;
 	}
 	
-	public JSONObject toJSON(Song song){
+	public JSONObject toJSON(){
 		JSONParser parser = new JSONParser();
-		JSONObject newSong = null;
-		try {
-			newSong = (JSONObject) parser.parse(song.toString());
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
+		JSONObject newSong = new JSONObject();
+//		try {
+//			newSong = (JSONObject)parser.parse(song.toString());
+//		} catch (ParseException e) {
+//			// TODO Auto-generated catch block
+//			System.err.println("there was an issue parsing " + song.getTitle());
+//		}
+			newSong.put("artist", this.artist);
+			newSong.put("trackId", this.trackId);
+			newSong.put("title", this.title);
 		return newSong;
 	}
 
+	public Song clone(Song song){
+		Song s = new Song();
+
+		s.artist = this.artist;
+		s.title = this.title;
+		s.trackId = this.trackId;
+		s.simList = new ArrayList<>();
+		s.tagList = new ArrayList<>();
+		
+		for(String sim : this.simList){
+			s.simList.add(sim);
+		}
+		for(String tag : this.tagList){
+			s.tagList.add(tag);
+		}
+			
+		return s;
+	}
+	
 	/**
 	 * Builds an ArrayList of just similar track ids from the song data
 	 * @return ArrayList of similars
@@ -149,7 +176,13 @@ public class Song {
 	 */
 	public String toString() {
 		return "Song [TITLE: " + "'" + this.title + "'," + " ARTIST: " + "'" + this.artist + "'," + " TRACKID: " + "'" + this.trackId
-				+ "'" + ", TAGLIST: " + this.tagList + "]";
+				+ " TAG: " + this.tagList + "SIMILARS: " + this.simList  + "]";
+	}
+	
+	public static void main(String[] args){
+//		Song s = new Song("Fuck the Police","alhgi3245", "nwa", );
+//		Song s = new Song("Rihanna", "TRADDXS12903CEDB38", "Don't Stop The Music", [["Love it", "dancepop", "r and b", "best", "handclaps", "pop dance", "i am a party girl here is my soundtrack", "leapsandloved", "moodboost"]], [["TRGXGJF128F933B4EB", "TRMYNVX128F92D3097, TRHFGRA128F92D309A"]]
+//);
 	}
 
 }

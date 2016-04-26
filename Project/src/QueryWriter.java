@@ -5,6 +5,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.TreeSet;
+
+import org.json.simple.JSONObject;
 
 public class QueryWriter {
 	/**
@@ -33,38 +36,63 @@ public class QueryWriter {
 		return "\"" + text + "\"";
 	}
 	
+	
+
+	public void writeQueries(Path outputPath, JSONObject jsonResults){
+		try (BufferedWriter bw = Files.newBufferedWriter(outputPath,
+				Charset.forName("UTF-8"))) {
+			bw.write(jsonResults.toString());
+		}
+//			bw.write("{");
+//			if(searchBy.equals("artist")){
+//				bw.write("searchByArtist" + ":" );
+//				
+//			}
+//			if(searchBy.equals("title")){
+//				bw.write("searchByTitle");
+//			}
+//			if(searchBy.equals("tag")){
+//				bw.write("searchByTag");
+//				bw.write(":"+"[" + "{");
+//				
+////				writeSimilars(library.similarSongs, bw);
+//			}
+//			
+//			bw.write("}");
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+ catch (IOException e) {
+	// TODO Auto-generated catch block
+	e.printStackTrace();
+}
+	}
+	
 	/**
 	 * writes entire partial search
 	 * @param outputPath
 	 * 			path to output partial search to
 	 * @throws IOException
 	 */
-	public static void writeResults(Path outputPath, ArrayList<Song> similarSongs) throws IOException {
-
-		try (BufferedWriter bw = Files.newBufferedWriter(outputPath,
-				Charset.forName("UTF-8"))) {
-
-			
-
-			if (!similarSongs.isEmpty()) {
-				
-				for(Song s : similarSongs){
-					bw.write("{");
-//					bw.newLine();
-					bw.write( indent(1) + quote("artist") + ":" + quote(s.getArtist()));
-//					bw.newLine();
-					bw.write( indent(1) + quote("trackId") + ":" + quote(s.getTrackId()));
-//					bw.newLine();
-					bw.write( indent(1) + quote("title") + ":" + quote(s.getTitle()));
-//					bw.newLine();
-					bw.write("}");
-//					bw.newLine();
-				}
-			}
-			
-
-		} catch (IOException e) {
-			System.err.println("Problem outputting partial search to " + outputPath);
-		}
-	}
+//	public static void writeSimilars(TreeSet<JSONObject> similarSongs, BufferedWriter bw) throws IOException {
+//			
+//				bw.write("similars:[");
+//				if (!similarSongs.isEmpty()) {
+//					
+//					for(JSONObject s : similarSongs){
+//						bw.write("{");
+//	//					bw.newLine();
+//						bw.write( indent(1) + quote("artist") + ":" + quote(s.getArtist()));
+//	//					bw.newLine();
+//						bw.write( indent(1) + quote("trackId") + ":" + quote(s.getTrackId()));
+//	//					bw.newLine();
+//						bw.write( indent(1) + quote("title") + ":" + quote(s.getTitle()));
+//	//					bw.newLine();
+//						bw.write("}");
+//	//					bw.newLine();
+//					}
+//				}
+//				bw.write("]");
+//	}
 }
