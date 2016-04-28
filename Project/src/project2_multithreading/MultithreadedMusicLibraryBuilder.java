@@ -1,3 +1,4 @@
+package project2_multithreading;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -8,6 +9,9 @@ import java.nio.file.Path;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+
+import project1_librarybuilding.MusicLibraryBuilder;
+import project1_librarybuilding.Song;
 
 /**
  * Utility class that builds the Music Library concurrently, given an input path

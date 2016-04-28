@@ -8,6 +8,13 @@ import javax.servlet.ServletContextListener;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 
+import project1_librarybuilding.ArgumentParser;
+import project1_librarybuilding.MusicLibrary;
+import project1_librarybuilding.MusicLibraryBuilder;
+import project2_multithreading.MultithreadedMusicLibraryBuilder;
+import project2_multithreading.ThreadSafeMusicLibrary;
+import project3p1_querybuilding.QueryBuilder;
+
 /**
  * Main Driver class
  * 
@@ -27,23 +34,20 @@ public class Driver {
 	public static final String ORDER_BY_ARTIST = "artist";
 	public static final String ORDER_BY_TITLE = "title";
 	public static final String ORDER_BY_TAG = "tag";
-	
+
 	public static final String SEARCH_INPUT = "-searchInput";
 	public static final String SEARCH_OUTPUT = "-searchOutput";
-	
-	public static final int DEFAULT_PORT = 14001;
-	
-	
+
+
 	/**
 	 * Main method to begin building the music library and create the text file
 	 * 
 	 * @param args
 	 *            to be parsed to determine the order of the output, input file
 	 *            to be read, and output file to be written to
-	 * @throws EmptyFileException 
 	 */
 	public static void main(String[] args) {
-		
+
 		int numThreads = 10;
 		ThreadSafeMusicLibrary safeLibrary = new ThreadSafeMusicLibrary();
 		MusicLibrary library = new MusicLibrary();
@@ -68,33 +72,29 @@ public class Driver {
 								numThreads);
 						musicLibraryBuilder.traverse(inputPath, safeLibrary);
 						safeLibrary.writeToOutput(outputPath, order);
-						
-						
+
 					} else {
 						MusicLibraryBuilder.traverseDirectory(inputPath, library);
 						library.writeToOutput(outputPath, order);
 					}
-					if(argumentParser.hasFlag(SEARCH_INPUT)&& argumentParser.hasFlag(SEARCH_OUTPUT)){
-							String inputQuery = argumentParser.getValue(SEARCH_INPUT);
-							Path queryInputPath = Paths.get(inputQuery);
-							String outputQuery =  argumentParser.getValue(SEARCH_OUTPUT);
-							Path queryOutputPath = Paths.get(outputQuery);
-							if(argumentParser.hasThreadFlag(THREADS_FLAG)){
-								qBuilder.readQueries(queryInputPath, queryOutputPath, safeLibrary);
-							}
-							else{
-								qBuilder.readQueries(queryInputPath, queryOutputPath, library);
-							}						
+					if (argumentParser.hasFlag(SEARCH_INPUT) && argumentParser.hasFlag(SEARCH_OUTPUT)) {
+						String inputQuery = argumentParser.getValue(SEARCH_INPUT);
+						Path queryInputPath = Paths.get(inputQuery);
+						String outputQuery = argumentParser.getValue(SEARCH_OUTPUT);
+						Path queryOutputPath = Paths.get(outputQuery);
+						if (argumentParser.hasThreadFlag(THREADS_FLAG)) {
+							qBuilder.readQueries(queryInputPath, queryOutputPath, safeLibrary);
+						} else {
+							qBuilder.readQueries(queryInputPath, queryOutputPath, library);
+						}
 					}
 
 				}
-				
-				
+
 			}
-			
+
 		}
-		
-		
+
 		return;
 	}
 }

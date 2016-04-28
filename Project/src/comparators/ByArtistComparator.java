@@ -1,4 +1,8 @@
+package comparators;
+
 import java.util.Comparator;
+
+import project1_librarybuilding.Song;
 
 /**
  * Comparator to sort a data structure by artist name, if artist names are the

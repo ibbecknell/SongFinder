@@ -1,4 +1,8 @@
+package comparators;
+
 import java.util.Comparator;
+
+import project1_librarybuilding.Song;
 
 /**
  * Comparator to sort a data structure by song title, if titles are the same,

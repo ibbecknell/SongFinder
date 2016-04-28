@@ -1,4 +1,8 @@
+package project2_multithreading;
 import java.nio.file.Path;
+
+import project1_librarybuilding.MusicLibrary;
+import project1_librarybuilding.Song;
 
 /**
  * Maintains a thread-safe music library of several songs using reentrant locks.

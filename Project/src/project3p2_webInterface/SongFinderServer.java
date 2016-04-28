@@ -1,3 +1,4 @@
+package project3p2_webInterface;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -6,6 +7,9 @@ import javax.servlet.ServletContextListener;
 
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
+
+import project1_librarybuilding.MusicLibraryBuilder;
+import project2_multithreading.ThreadSafeMusicLibrary;
 
 
 

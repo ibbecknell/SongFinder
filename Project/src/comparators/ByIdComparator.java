@@ -1,4 +1,8 @@
+package comparators;
+
 import java.util.Comparator;
+
+import project1_librarybuilding.Song;
 
 public class ByIdComparator implements Comparator<Song> {
 	@Override
