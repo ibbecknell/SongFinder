@@ -43,6 +43,7 @@ public class Driver {
 	 * @throws EmptyFileException 
 	 */
 	public static void main(String[] args) {
+		
 		int numThreads = 10;
 		ThreadSafeMusicLibrary safeLibrary = new ThreadSafeMusicLibrary();
 		MusicLibrary library = new MusicLibrary();
@@ -67,6 +68,8 @@ public class Driver {
 								numThreads);
 						musicLibraryBuilder.traverse(inputPath, safeLibrary);
 						safeLibrary.writeToOutput(outputPath, order);
+						
+						
 					} else {
 						MusicLibraryBuilder.traverseDirectory(inputPath, library);
 						library.writeToOutput(outputPath, order);
@@ -86,48 +89,11 @@ public class Driver {
 
 				}
 				
+				
 			}
 			
 		}
-		Server server = new Server(DEFAULT_PORT);
-
-		//create a ServletHander to attach servlets
-		ServletContextHandler servhandler = new ServletContextHandler(ServletContextHandler.SESSIONS);        
-		server.setHandler(servhandler);
-
-		servhandler.addEventListener(new ServletContextListener() {
-
-			@Override
-			public void contextDestroyed(ServletContextEvent sce) {
-				//Do nothing when server shut down.
-			}
-
-			@Override
-			public void contextInitialized(ServletContextEvent sce) {
-
-				Path path = Paths.get("grades.json");
-				GradeBook book = GradeBookBuilder.buildBook(path);
-				//if grades file is not valid then create an empty GradeBook.
-				if(book == null) {
-					book = new GradeBook();
-				}
-				sce.getServletContext().setAttribute("gradebook", book);
-			}
-
-		});
-
-		//add a servlet for searching for grades
-		servhandler.addServlet(GradeSearchServlet.class, "/search");
-
-		//TODO: add a servlet for displaying grades of all students in the GradeBook
-		servhandler.addServlet(GradeDisplayServlet.class, "/all");
 		
-		//set the list of handlers for the server
-		server.setHandler(servhandler);
-
-		server.start();
-		server.join();
-	}
 		
 		return;
 	}

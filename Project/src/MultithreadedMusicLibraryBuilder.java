@@ -16,6 +16,7 @@ import org.json.simple.parser.ParseException;
  *
  */
 public class MultithreadedMusicLibraryBuilder extends MusicLibraryBuilder {
+	
 
 	private final WorkQueue workers;
 
@@ -138,5 +139,7 @@ public class MultithreadedMusicLibraryBuilder extends MusicLibraryBuilder {
 			System.err.println("Could not parse the file");
 		}
 	}
+	
+	
 
 }

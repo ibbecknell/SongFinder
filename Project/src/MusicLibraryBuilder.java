@@ -18,6 +18,7 @@ import org.json.simple.parser.ParseException;
  *
  */
 public class MusicLibraryBuilder {
+	protected ThreadSafeMusicLibrary library;
 
 	/**
 	 * Helper method that recursively traverses a specified directory. Calls
@@ -71,6 +72,12 @@ public class MusicLibraryBuilder {
 		}
 	}
 
+	public ThreadSafeMusicLibrary buildLibrary(Path directory, ThreadSafeMusicLibrary musicLibrary){
+		traverseDirectory(directory, musicLibrary);
+		this.library = musicLibrary;
+		return this.library;
+	}
+	
 	/**
 	 * Driver method for debugging
 	 * 
