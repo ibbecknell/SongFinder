@@ -185,6 +185,18 @@ public class MusicLibrary {
 		return toReturn;
 
 	}
+	
+	public boolean hasArtist(String artist){
+		return artistMap.containsKey(artist);
+	}
+	
+	public boolean hasTitle(String title){
+		return titleMap.containsKey(title);
+	}
+	
+	public boolean hasTag(String tag){
+		return tagMap.containsKey(tag);
+	}
 
 	public JSONObject getJSONSearchByTag(String tag) {
 		JSONObject obj = new JSONObject();
