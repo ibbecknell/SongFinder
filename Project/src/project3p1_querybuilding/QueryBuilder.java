@@ -13,19 +13,13 @@ import org.json.simple.parser.ParseException;
 
 import project1_librarybuilding.MusicLibrary;
 
-//TODO
+
 public class QueryBuilder {
 	private boolean artist = false;
 	private boolean title = false;
 	private boolean tag = false;
 
-	/**
-	 * 
-	 * TODO
-	 * @param p
-	 * @param outputPath
-	 * @param lib
-	 */
+
 	public void readQueries(Path p, Path outputPath, MusicLibrary lib) {
 		JSONParser parser = new JSONParser();
 		try (BufferedReader buffered_reader = Files.newBufferedReader(p, Charset.forName("UTF-8"))) {

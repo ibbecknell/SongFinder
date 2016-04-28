@@ -1,9 +1,9 @@
 package project1_librarybuilding;
+
 import java.util.ArrayList;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 /**
  * A class to maintain data about a single song.
@@ -39,7 +39,7 @@ public class Song {
 			ArrayList<ArrayList<Object>> tags) {
 		this.artist = artist;
 		this.trackId = trackId;
-		this.title = title;	
+		this.title = title;
 		this.tagList = buildTagList(tags);
 		this.simList = buildSimList(similars);
 	}
@@ -58,9 +58,9 @@ public class Song {
 		this.tagList = buildTagList((ArrayList<ArrayList<Object>>) object.get("tags"));
 		this.simList = buildSimList((ArrayList<ArrayList<Object>>) object.get("similars"));
 	}
-	
-	public Song(){
-		
+
+	public Song() {
+
 	}
 
 	/**
@@ -98,24 +98,18 @@ public class Song {
 	public ArrayList<String> getTagList() {
 		return this.tagList;
 	}
-	
-	public JSONObject toJSON(){
+
+	public JSONObject toJSON() {
 		JSONParser parser = new JSONParser();
-		
+
 		JSONObject newSong = new JSONObject();
-//		try {
-//			newSong = (JSONObject)parser.parse(song.toString());
-//		} catch (ParseException e) {
-//			// TODO Auto-generated catch block
-//			System.err.println("there was an issue parsing " + song.getTitle());
-//		}
-			newSong.put("artist", this.artist);
-			newSong.put("trackId", this.trackId);
-			newSong.put("title", this.title);
+		newSong.put("artist", this.artist);
+		newSong.put("trackId", this.trackId);
+		newSong.put("title", this.title);
 		return newSong;
 	}
 
-	public Song clone(Song song){
+	public Song clone(Song song) {
 		Song s = new Song();
 
 		s.artist = this.artist;
@@ -123,19 +117,20 @@ public class Song {
 		s.trackId = this.trackId;
 		s.simList = new ArrayList<>();
 		s.tagList = new ArrayList<>();
-		
-		for(String sim : this.simList){
+
+		for (String sim : this.simList) {
 			s.simList.add(sim);
 		}
-		for(String tag : this.tagList){
+		for (String tag : this.tagList) {
 			s.tagList.add(tag);
 		}
-			
+
 		return s;
 	}
-	
+
 	/**
 	 * Builds an ArrayList of just similar track ids from the song data
+	 * 
 	 * @return ArrayList of similars
 	 */
 	public ArrayList<String> buildSimList(ArrayList<ArrayList<Object>> similars) {
@@ -145,13 +140,14 @@ public class Song {
 		}
 		return simList;
 	}
-	
-	public ArrayList<String> getSimList(){
+
+	public ArrayList<String> getSimList() {
 		return simList;
 	}
-	
+
 	/**
 	 * Builds an ArrayList of just tag names from the song data
+	 * 
 	 * @return ArrayList of tags
 	 */
 	public ArrayList<String> buildTagList(ArrayList<ArrayList<Object>> tags) {
@@ -171,19 +167,13 @@ public class Song {
 		}
 	}
 
-	
 	/**
 	 * toString method for debugging
 	 */
 	public String toString() {
-		return "Song [TITLE: " + "'" + this.title + "'," + " ARTIST: " + "'" + this.artist + "'," + " TRACKID: " + "'" + this.trackId
-				+ " TAG: " + this.tagList + "SIMILARS: " + this.simList  + "]";
+		return "Song [TITLE: " + "'" + this.title + "'," + " ARTIST: " + "'" + this.artist + "'," + " TRACKID: " + "'"
+				+ this.trackId + " TAG: " + this.tagList + "SIMILARS: " + this.simList + "]";
 	}
-	
-	public static void main(String[] args){
-//		Song s = new Song("Fuck the Police","alhgi3245", "nwa", );
-//		Song s = new Song("Rihanna", "TRADDXS12903CEDB38", "Don't Stop The Music", [["Love it", "dancepop", "r and b", "best", "handclaps", "pop dance", "i am a party girl here is my soundtrack", "leapsandloved", "moodboost"]], [["TRGXGJF128F933B4EB", "TRMYNVX128F92D3097, TRHFGRA128F92D309A"]]
-//);
-	}
+
 
 }

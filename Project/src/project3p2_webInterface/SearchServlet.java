@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Search for Song info.
  * 
- * @author srollins
  *
  */
 public class SearchServlet extends BaseServlet {
