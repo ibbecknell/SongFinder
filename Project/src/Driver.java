@@ -1,12 +1,6 @@
-import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
-
-import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.servlet.ServletContextHandler;
 
 import project1_librarybuilding.ArgumentParser;
 import project1_librarybuilding.MusicLibrary;

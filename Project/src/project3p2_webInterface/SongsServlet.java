@@ -36,7 +36,9 @@ public class SongsServlet extends BaseServlet {
 
 		}
 
-		String responseHtml = "<html>" + "<title>Song Finder</title>" + "<body>";
+		String responseHtml = "<html>" + "<head><title>Song Finder</title>"
+				+ "<style> p { padding-top: 1%; border-top: solid; border-top-width: 1px; border-top-color: #A9A9A9; }</style>"
+				+ "</head>" +"<body>";
 		if (result != null) {
 			responseHtml = "<h1><center>Song Finder</center></h1>" + "<form action=\"songs\" method=\"get\">"
 					+ "Welcome to song finder! Search for an artist, song title, or tag and we will give you a list of similar songs you might like.<br/>"
@@ -47,13 +49,8 @@ public class SongsServlet extends BaseServlet {
 					+ " <table border=\"2px\" width=\"100%\">" + "<tr><th>Artist</th><th>Song Title</th></tr>";
 
 			responseHtml = getArray(searchByArray, responseHtml) + "</table>";
-		} else {
+		} 
 
-			responseHtml = "Music Library is Empty!";
-
-		}
-
-		responseHtml = responseHtml;
 		PrintWriter writer = prepareResponse(response);
 		writer.println(responseHtml);
 
@@ -62,8 +59,8 @@ public class SongsServlet extends BaseServlet {
 	private String getArray(JSONArray students, String responseHTML) {
 		for (int i = 0; i < students.size(); i++) {
 			JSONObject student = (JSONObject) students.get(i);
-			responseHTML = responseHTML.concat("<tr><td><center>" + (String) student.get("artist").toString()
-					+ "</center></td><td><center>" + (String) student.get("title").toString() + "</center></td></tr>");
+			responseHTML = responseHTML.concat("<tr><td>" + (String) student.get("artist").toString()
+					+ "</td><td>" + (String) student.get("title").toString() + "</td></tr>");
 		}
 		return responseHTML;
 	}

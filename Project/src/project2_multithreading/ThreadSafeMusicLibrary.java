@@ -1,8 +1,11 @@
 package project2_multithreading;
 import java.nio.file.Path;
 
+import org.json.simple.JSONObject;
+
 import project1_librarybuilding.MusicLibrary;
 import project1_librarybuilding.Song;
+import project3p1_querybuilding.QueryWriter;
 
 /**
  * Maintains a thread-safe music library of several songs using reentrant locks.
@@ -46,6 +49,31 @@ public class ThreadSafeMusicLibrary extends MusicLibrary {
 		lock.lockRead();
 		super.writeToOutput(output, order);
 		lock.unlockRead();
+	}
+
+	@Override
+	public JSONObject getJSONSearchByTag(String tag) {
+		return super.getJSONSearchByTag(tag);
+	}
+
+	@Override
+	public JSONObject getJSONSearchByArtist(String artist) {
+		return super.getJSONSearchByArtist(artist);
+	}
+
+	@Override
+	public JSONObject getJSONSearchByTitle(String title) {
+		return super.getJSONSearchByTitle(title);
+	}
+
+	@Override
+	public JSONObject getJSONResults(boolean artist, boolean title, boolean tag) {
+		return super.getJSONResults(artist, title, tag);
+	}
+	
+	@Override
+	public void writeToJSON(Path outputPath) {
+		super.writeToJSON(outputPath);
 	}
 
 	/******************* METHODS FOR DEBUGGING ***********************/

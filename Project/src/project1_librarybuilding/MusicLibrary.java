@@ -43,19 +43,13 @@ public class MusicLibrary {
 
 	protected final TreeMap<String, Song> idMap;
 
-	protected JSONArray similarArtistSongs;
+	private JSONArray jsonArtistResults;
 
-	protected JSONArray similarTitleSongs;
+	private JSONArray jsonTagResults;
 
-	protected JSONArray similarTagSongs;
+	private JSONArray jsonTitleResults;
 
-	protected JSONArray jsonArtistResults;
-
-	protected JSONArray jsonTagResults;
-
-	protected JSONArray jsonTitleResults;
-
-	protected JSONObject jsonResults;
+	private JSONObject jsonResults;
 
 	/**
 	 * Constructor to initialize Data Structures
@@ -71,7 +65,7 @@ public class MusicLibrary {
 
 	}
 
-	public TreeMap<String, Song> cloneIdMap() {
+	private TreeMap<String, Song> cloneIdMap() {
 		TreeMap<String, Song> toReturn = new TreeMap<String, Song>();
 		for (String s : this.idMap.keySet()) {
 			toReturn.put(s, this.idMap.get(s).clone(this.idMap.get(s)));
@@ -79,9 +73,9 @@ public class MusicLibrary {
 		return toReturn;
 	}
 
-	public JSONArray getSimilarTitleSongs(TreeSet<String> resultList) {
+	private JSONArray getSimilarTitleSongs(TreeSet<String> resultList) {
 		TreeMap<String, Song> idMapClone = cloneIdMap();
-		similarTitleSongs = new JSONArray();
+		JSONArray similarTitleSongs = new JSONArray();
 		for (String s : resultList) {
 			if (idMapClone.get(s).getTrackId() != null) {
 				JSONObject obj = (JSONObject) idMapClone.get(s).toJSON();
@@ -91,9 +85,9 @@ public class MusicLibrary {
 		return similarTitleSongs;
 	}
 
-	public JSONArray getSimilarArtistSongs(TreeSet<String> resultList) {
+	private JSONArray getSimilarArtistSongs(TreeSet<String> resultList) {
 		TreeMap<String, Song> idMapClone = cloneIdMap();
-		similarArtistSongs = new JSONArray();
+		JSONArray similarArtistSongs = new JSONArray();
 		for (String s : resultList) {
 			if (idMapClone.get(s).getTrackId() != null) {
 				JSONObject obj = (JSONObject) idMapClone.get(s).toJSON();
@@ -104,7 +98,7 @@ public class MusicLibrary {
 		return similarArtistSongs;
 	}
 
-	public JSONArray searchByArtist(String artist) {
+	private JSONArray searchByArtist(String artist) {
 		TreeMap<String, Song> idMapClone = cloneIdMap();
 		TreeSet<String> resultList = new TreeSet<String>();
 		if (getSongsByArtist(artist) != null) {
@@ -122,7 +116,7 @@ public class MusicLibrary {
 		return similarSongs;
 	}
 	
-	public JSONArray searchByTitle(String title) {
+	private JSONArray searchByTitle(String title) {
 		TreeMap<String, Song> idMapClone = cloneIdMap();
 		TreeSet<String> resultList = new TreeSet<String>();
 		if (getSongsByTitle(title) != null) {
@@ -141,9 +135,9 @@ public class MusicLibrary {
 		return similarSongs;
 	}
 	
-	public JSONArray searchByTag(String tag) {
+	private JSONArray searchByTag(String tag) {
 		TreeMap<String, Song> idMapClone = cloneIdMap();
-		similarTagSongs = new JSONArray();
+		JSONArray similarTagSongs = new JSONArray();
 		for (String s : getSongsByTag(tag)) {
 			JSONObject obj = idMapClone.get(s).toJSON();
 			similarTagSongs.add(obj);
@@ -151,7 +145,7 @@ public class MusicLibrary {
 		return similarTagSongs;
 	}
 
-	public TreeSet<String> getSongsByTag(String tag) {
+	private TreeSet<String> getSongsByTag(String tag) {
 		TreeSet<String> toReturn = new TreeSet<String>();
 		TreeSet<String> current = tagMap.get(tag);
 		for (String s : current) {
@@ -167,7 +161,7 @@ public class MusicLibrary {
 	 *            whose songs are being returned
 	 * @return TreeSet of songs from given input
 	 */
-	public TreeSet<Song> getSongsByArtist(String artist) {
+	private TreeSet<Song> getSongsByArtist(String artist) {
 		TreeSet<Song> toReturn = new TreeSet<Song>(new ByIdComparator());
 		TreeSet<Song> current = artistMap.get(artist);
 		if (current != null) {
@@ -181,7 +175,7 @@ public class MusicLibrary {
 
 	
 
-	public TreeSet<Song> getSongsByTitle(String title) {
+	private TreeSet<Song> getSongsByTitle(String title) {
 		TreeSet<Song> toReturn = new TreeSet<Song>(new ByTitleComparator());
 		TreeSet<Song> current = titleMap.get(title);
 		for (Song s : current) {
@@ -193,29 +187,24 @@ public class MusicLibrary {
 	}
 
 	public JSONObject getJSONSearchByTag(String tag) {
-		searchByTag(tag);
 		JSONObject obj = new JSONObject();
-		obj.put("similars", similarTagSongs);
+		obj.put("similars", searchByTag(tag));
 		obj.put("tag", tag);
-		// System.out.println(obj);
 		jsonTagResults.add(obj);
-		// System.out.println(jsonTagResults.toString());
 		return obj;
 	}
 
 	public JSONObject getJSONSearchByArtist(String artist) {
-		searchByArtist(artist);
 		JSONObject obj = new JSONObject();
 		obj.put("artist", artist);
-		obj.put("similars", similarArtistSongs);
+		obj.put("similars", searchByArtist(artist));
 		jsonArtistResults.add(obj);
 		return obj;
 	}
 
 	public JSONObject getJSONSearchByTitle(String title) {
-		searchByTitle(title);
 		JSONObject obj = new JSONObject();
-		obj.put("similars", similarTitleSongs);
+		obj.put("similars", searchByTitle(title));
 		obj.put("title", title);
 		jsonTitleResults.add(obj);
 		return obj;
@@ -235,13 +224,6 @@ public class MusicLibrary {
 		return jsonResults;
 	}
 
-	public JSONObject getJSONSimilars() {
-		JSONObject obj = new JSONObject();
-		obj.put("artist", similarArtistSongs);
-		obj.put("title", similarTitleSongs);
-		obj.put("tag", similarTagSongs);
-		return obj;
-	}
 
 	public void writeToJSON(Path outputPath) {
 		QueryWriter writer = new QueryWriter();
