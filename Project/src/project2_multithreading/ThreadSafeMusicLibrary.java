@@ -5,7 +5,6 @@ import org.json.simple.JSONObject;
 
 import project1_librarybuilding.MusicLibrary;
 import project1_librarybuilding.Song;
-import project3p1_querybuilding.QueryWriter;
 
 /**
  * Maintains a thread-safe music library of several songs using reentrant locks.
