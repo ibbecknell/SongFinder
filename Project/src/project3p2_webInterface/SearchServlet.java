@@ -21,6 +21,7 @@ public class SearchServlet extends BaseServlet {
 	 * box where a song's artist, title, or tag may be entered.
 	 */
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+//TODO: move common code to the base servlet.		
 		String responseHtml = "<html" + "<head><title>Song Finder</title>"
 				+ "<style> p { padding-top: 1%; border-top: solid; border-top-width: 1px; border-top-color: #A9A9A9; }</style>"
 				+ "</head>" + "<body>" + "<h1><center> Song Finder</center></h1>"
