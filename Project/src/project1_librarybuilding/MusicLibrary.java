@@ -43,6 +43,8 @@ public class MusicLibrary {
 
 	protected final TreeMap<String, Song> idMap;
 
+//TODO: do not store the intermedate search results as data members.
+
 	private JSONArray jsonArtistResults;
 
 	private JSONArray jsonTagResults;
