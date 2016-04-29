@@ -25,6 +25,9 @@ public class QueryBuilder {
 		try (BufferedReader buffered_reader = Files.newBufferedReader(p, Charset.forName("UTF-8"))) {
 			if (buffered_reader != null) {
 				JSONObject contents = (JSONObject) parser.parse(buffered_reader);
+//TODO: close the query file as soon as you've parsed it.				
+
+//TODO: build up your query result JSON in these if statements.
 				if (contents.containsKey("searchByArtist")) {
 					artist = true;
 					JSONArray artistQueries = (JSONArray) contents.get("searchByArtist");
@@ -48,7 +51,11 @@ public class QueryBuilder {
 						lib.getJSONSearchByTag((String) tagQueries.get(i));
 					}
 				}
+				
+//TODO: move the getJSONResults method into this class or somewhere else outside of MusicLibrary.				
 				lib.getJSONResults(artist, title, tag);
+				
+//TODO: move writeToJSON into the QueryWriter and invoke that method from here. 				
 				lib.writeToJSON(outputPath);
 			}
 
