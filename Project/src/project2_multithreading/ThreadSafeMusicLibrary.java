@@ -50,6 +50,7 @@ public class ThreadSafeMusicLibrary extends MusicLibrary {
 		lock.unlockRead();
 	}
 
+//TODO: any read method must acquire a read lock.
 	@Override
 	public JSONObject getJSONSearchByTag(String tag) {
 		return super.getJSONSearchByTag(tag);
