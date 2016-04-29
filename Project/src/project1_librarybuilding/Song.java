@@ -110,6 +110,11 @@ public class Song {
 	}
 
 	public Song clone(Song song) {
+//copy the simList
+//copy the tagList
+//create new song passing in artist, title, trackId, simListCopy, tagListCopy
+//return new song
+		
 		Song s = new Song();
 
 		s.artist = this.artist;
