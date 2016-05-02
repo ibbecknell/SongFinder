@@ -50,30 +50,28 @@ public class ThreadSafeMusicLibrary extends MusicLibrary {
 		lock.unlockRead();
 	}
 
-//TODO: any read method must acquire a read lock.
 	@Override
 	public JSONObject getJSONSearchByTag(String tag) {
-		return super.getJSONSearchByTag(tag);
+		lock.lockRead();
+		JSONObject obj = super.getJSONSearchByTag(tag);
+		lock.unlockRead();
+		return obj;
 	}
 
 	@Override
 	public JSONObject getJSONSearchByArtist(String artist) {
-		return super.getJSONSearchByArtist(artist);
+		lock.lockRead();
+		JSONObject obj = super.getJSONSearchByArtist(artist);
+		lock.unlockRead();
+		return obj;
 	}
 
 	@Override
 	public JSONObject getJSONSearchByTitle(String title) {
-		return super.getJSONSearchByTitle(title);
-	}
-
-	@Override
-	public JSONObject getJSONResults(boolean artist, boolean title, boolean tag) {
-		return super.getJSONResults(artist, title, tag);
-	}
-	
-	@Override
-	public void writeToJSON(Path outputPath) {
-		super.writeToJSON(outputPath);
+		lock.lockRead();
+		JSONObject obj = super.getJSONSearchByTitle(title);
+		lock.unlockRead();
+		return obj;
 	}
 
 	/******************* METHODS FOR DEBUGGING ***********************/

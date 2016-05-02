@@ -43,15 +43,6 @@ public class MusicLibrary {
 
 	protected final TreeMap<String, Song> idMap;
 
-//TODO: do not store the intermedate search results as data members.
-
-	private JSONArray jsonArtistResults;
-
-	private JSONArray jsonTagResults;
-
-	private JSONArray jsonTitleResults;
-
-	private JSONObject jsonResults;
 
 	/**
 	 * Constructor to initialize Data Structures
@@ -61,9 +52,6 @@ public class MusicLibrary {
 		this.titleMap = new TreeMap<String, TreeSet<Song>>();
 		this.artistMap = new TreeMap<String, TreeSet<Song>>();
 		this.idMap = new TreeMap<String, Song>();
-		this.jsonArtistResults = new JSONArray();
-		this.jsonTagResults = new JSONArray();
-		this.jsonTitleResults = new JSONArray();
 
 	}
 
@@ -105,6 +93,7 @@ public class MusicLibrary {
 		TreeSet<String> resultList = new TreeSet<String>();
 		if (getSongsByArtist(artist) != null) {
 			TreeSet<Song> songs = getSongsByArtist(artist);
+//			System.out.println("songs similar to "+ artist +": " + songs);
 			for (Song s : songs) {
 				ArrayList<String> similarList = s.getSimList();
 				for (String similarSong : similarList) {
@@ -171,7 +160,6 @@ public class MusicLibrary {
 				toReturn.add(s.clone(s));
 			}
 		}
-
 		return toReturn;
 	}
 
@@ -204,15 +192,16 @@ public class MusicLibrary {
 		JSONObject obj = new JSONObject();
 		obj.put("similars", searchByTag(tag));
 		obj.put("tag", tag);
-		jsonTagResults.add(obj);
 		return obj;
 	}
 
 	public JSONObject getJSONSearchByArtist(String artist) {
+//		System.out.println("creating json obj");
 		JSONObject obj = new JSONObject();
+//		System.out.println("putting artist name in json");
 		obj.put("artist", artist);
+//		System.out.println("searching for artist");
 		obj.put("similars", searchByArtist(artist));
-		jsonArtistResults.add(obj);
 		return obj;
 	}
 
@@ -220,28 +209,7 @@ public class MusicLibrary {
 		JSONObject obj = new JSONObject();
 		obj.put("similars", searchByTitle(title));
 		obj.put("title", title);
-		jsonTitleResults.add(obj);
 		return obj;
-	}
-
-	public JSONObject getJSONResults(boolean artist, boolean title, boolean tag) {
-		jsonResults = new JSONObject();
-		if (artist) {
-			jsonResults.put("searchByArtist", jsonArtistResults);
-		}
-		if (title) {
-			jsonResults.put("searchByTitle", jsonTitleResults);
-		}
-		if (tag) {
-			jsonResults.put("searchByTag", jsonTagResults);
-		}
-		return jsonResults;
-	}
-
-
-	public void writeToJSON(Path outputPath) {
-		QueryWriter writer = new QueryWriter();
-		writer.writeQueries(outputPath, jsonResults);
 	}
 
 	/**

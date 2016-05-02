@@ -1,9 +1,12 @@
 package project1_librarybuilding;
 
 import java.util.ArrayList;
+import java.util.TreeSet;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+
+import comparators.ByTitleComparator;
 
 /**
  * A class to maintain data about a single song.
@@ -59,9 +62,15 @@ public class Song {
 		this.simList = buildSimList((ArrayList<ArrayList<Object>>) object.get("similars"));
 	}
 
-	public Song() {
-
+	private Song(ArrayList<String> toReturnSim,
+			ArrayList<String> toReturnTag,String artist2, String title2, String trackId2) {
+		this.artist = artist2;
+		this.trackId = trackId2;
+		this.title = title2;
+		this.tagList = toReturnTag;
+		this.simList = toReturnSim;
 	}
+
 
 	/**
 	 * Return artist.
@@ -114,22 +123,27 @@ public class Song {
 //copy the tagList
 //create new song passing in artist, title, trackId, simListCopy, tagListCopy
 //return new song
+		ArrayList<String> toReturnSim = new ArrayList<String>();
+		ArrayList<String> currentSim = song.simList;
 		
-		Song s = new Song();
+		ArrayList<String> toReturnTag = new ArrayList<String>();
+		ArrayList<String> currentTag = song.tagList;
+		
+		
 
-		s.artist = this.artist;
-		s.title = this.title;
-		s.trackId = this.trackId;
-		s.simList = new ArrayList<>();
-		s.tagList = new ArrayList<>();
+//		s.artist = this.artist;
+//		s.title = this.title;
+//		s.trackId = this.trackId;
+//		s.simList = new ArrayList<>();
+//		s.tagList = new ArrayList<>();
 
-		for (String sim : this.simList) {
-			s.simList.add(sim);
+		for (String sim : currentSim) {
+			toReturnSim.add(sim);
 		}
-		for (String tag : this.tagList) {
-			s.tagList.add(tag);
+		for (String tag :currentTag) {
+			toReturnTag.add(tag);
 		}
-
+		Song s = new Song(toReturnSim, toReturnTag, song.artist, song.title, song.trackId);
 		return s;
 	}
 
@@ -177,7 +191,7 @@ public class Song {
 	 */
 	public String toString() {
 		return "Song [TITLE: " + "'" + this.title + "'," + " ARTIST: " + "'" + this.artist + "'," + " TRACKID: " + "'"
-				+ this.trackId + " TAG: " + this.tagList + "SIMILARS: " + this.simList + "]";
+				+ this.trackId + " TAG: " + this.tagList + " SIMILARS: " + this.simList + "]";
 	}
 
 

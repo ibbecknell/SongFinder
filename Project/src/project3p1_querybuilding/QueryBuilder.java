@@ -18,45 +18,56 @@ public class QueryBuilder {
 	private boolean artist = false;
 	private boolean title = false;
 	private boolean tag = false;
+	private JSONArray jsonArtistResults;
+
+	private JSONArray jsonTagResults;
+
+	private JSONArray jsonTitleResults;
+
+	private JSONObject jsonResults;
 
 
 	public void readQueries(Path p, Path outputPath, MusicLibrary lib) {
+		QueryWriter writer = new QueryWriter();
 		JSONParser parser = new JSONParser();
 		try (BufferedReader buffered_reader = Files.newBufferedReader(p, Charset.forName("UTF-8"))) {
 			if (buffered_reader != null) {
 				JSONObject contents = (JSONObject) parser.parse(buffered_reader);
-//TODO: close the query file as soon as you've parsed it.				
-
-//TODO: build up your query result JSON in these if statements.
+				buffered_reader.close();
 				if (contents.containsKey("searchByArtist")) {
+					jsonArtistResults = new JSONArray();
 					artist = true;
 					JSONArray artistQueries = (JSONArray) contents.get("searchByArtist");
 					for (int i = 0; i < artistQueries.size(); i++) {
-						lib.getJSONSearchByArtist((String) artistQueries.get(i));
+						JSONObject obj = lib.getJSONSearchByArtist((String) artistQueries.get(i));
+						jsonArtistResults.add(obj);
+						
 					}
 				}
 				if (contents.containsKey("searchByTitle")) {
+					jsonTitleResults = new JSONArray();
 					title = true;
 					JSONArray titleQueries = (JSONArray) contents.get("searchByTitle");
 
 					for (int i = 0; i < titleQueries.size(); i++) {
-						lib.getJSONSearchByTitle((String) titleQueries.get(i));
+						JSONObject obj = lib.getJSONSearchByTitle((String) titleQueries.get(i));
+						jsonTitleResults.add(obj);
 					}
 				}
 				if (contents.containsKey("searchByTag")) {
+					jsonTagResults = new JSONArray();
 					tag = true;
 					JSONArray tagQueries = (JSONArray) contents.get("searchByTag");
 
 					for (int i = 0; i < tagQueries.size(); i++) {
-						lib.getJSONSearchByTag((String) tagQueries.get(i));
+						JSONObject obj = lib.getJSONSearchByTag((String) tagQueries.get(i));
+						jsonTagResults.add(obj);
 					}
 				}
 				
-//TODO: move the getJSONResults method into this class or somewhere else outside of MusicLibrary.				
-				lib.getJSONResults(artist, title, tag);
+				JSONObject results = getJSONResults(artist, title, tag);
 				
-//TODO: move writeToJSON into the QueryWriter and invoke that method from here. 				
-				lib.writeToJSON(outputPath);
+				writer.writeQueries(outputPath, results);
 			}
 
 		} catch (IOException e) {
@@ -66,5 +77,20 @@ public class QueryBuilder {
 		}
 
 	}
+	
+	public JSONObject getJSONResults(boolean artist, boolean title, boolean tag) {
+		jsonResults = new JSONObject();
+		if (artist) {
+			jsonResults.put("searchByArtist", jsonArtistResults);
+		}
+		if (title) {
+			jsonResults.put("searchByTitle", jsonTitleResults);
+		}
+		if (tag) {
+			jsonResults.put("searchByTag", jsonTagResults);
+		}
+		return jsonResults;
+	}
+
 
 }
