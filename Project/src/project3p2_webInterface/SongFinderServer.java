@@ -11,6 +11,8 @@ import org.eclipse.jetty.servlet.ServletContextHandler;
 
 import project1_librarybuilding.MusicLibraryBuilder;
 import project2_multithreading.ThreadSafeMusicLibrary;
+import project4_database.LoginServlet;
+import project4_database.*;
 
 public class SongFinderServer {
 	public static final int DEFAULT_PORT = 14001;
@@ -56,6 +58,14 @@ public class SongFinderServer {
 		// TODO: add a servlet for displaying songs
 		servhandler.addServlet(SongsServlet.class, "/songs");
 
+		//add a servlet to login
+		servhandler.addServlet(LoginServlet.class, "/");
+		
+		servhandler.addServlet(VerifyUserServlet.class, "/verifyuser");
+		
+		servhandler.addServlet(RegisterServlet.class, "/register");
+		
+		servhandler.addServlet(LogoutServlet.class, "/logout");
 		// set the list of handlers for the server
 		server.setHandler(servhandler);
 

@@ -2,19 +2,40 @@ package project3p2_webInterface;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import project2_multithreading.ThreadSafeMusicLibrary;
+import project4_database.DBHelper;
 
 public class SongsServlet extends BaseServlet {
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
+		DBHelper data = (DBHelper) getServletConfig().getServletContext().getAttribute(DATA);
+		
+		HttpSession session = request.getSession();
+		String name = (String) session.getAttribute(USERNAME);
+		String password = (String) session.getAttribute(PASSWORD);
+		
+		//user is not logged in, redirect to login page
+		try {
+			if(name == null || !data.verifyUser(name, password)) {
+				response.sendRedirect(response.encodeRedirectURL("/" + STATUS + "=" + NOT_LOGGED_IN));
+				return;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
 		boolean hasQuery = false;
 		String queryType = request.getParameter("queryType");
 		// get the parameter from the search box
@@ -63,7 +84,8 @@ public class SongsServlet extends BaseServlet {
 		}
 
 		PrintWriter writer = prepareResponse(response);
-		writer.println(headResponseHtml + responseHtml);
+//		String logout = writeLogout();
+		writer.println(writeUserInfo(name)+headResponseHtml + responseHtml);
 
 	}
 

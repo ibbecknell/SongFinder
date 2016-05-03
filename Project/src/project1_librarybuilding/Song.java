@@ -62,15 +62,6 @@ public class Song {
 		this.simList = buildSimList((ArrayList<ArrayList<Object>>) object.get("similars"));
 	}
 
-	private Song(ArrayList<String> toReturnSim,
-			ArrayList<String> toReturnTag,String artist2, String title2, String trackId2) {
-		this.artist = artist2;
-		this.trackId = trackId2;
-		this.title = title2;
-		this.tagList = toReturnTag;
-		this.simList = toReturnSim;
-	}
-
 
 	/**
 	 * Return artist.
@@ -116,35 +107,6 @@ public class Song {
 		newSong.put("trackId", this.trackId);
 		newSong.put("title", this.title);
 		return newSong;
-	}
-
-	public Song clone(Song song) {
-//copy the simList
-//copy the tagList
-//create new song passing in artist, title, trackId, simListCopy, tagListCopy
-//return new song
-		ArrayList<String> toReturnSim = new ArrayList<String>();
-		ArrayList<String> currentSim = song.simList;
-		
-		ArrayList<String> toReturnTag = new ArrayList<String>();
-		ArrayList<String> currentTag = song.tagList;
-		
-		
-
-//		s.artist = this.artist;
-//		s.title = this.title;
-//		s.trackId = this.trackId;
-//		s.simList = new ArrayList<>();
-//		s.tagList = new ArrayList<>();
-
-		for (String sim : currentSim) {
-			toReturnSim.add(sim);
-		}
-		for (String tag :currentTag) {
-			toReturnTag.add(tag);
-		}
-		Song s = new Song(toReturnSim, toReturnTag, song.artist, song.title, song.trackId);
-		return s;
 	}
 
 	/**

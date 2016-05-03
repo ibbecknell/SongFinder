@@ -52,26 +52,33 @@ public class ThreadSafeMusicLibrary extends MusicLibrary {
 
 	@Override
 	public JSONObject getJSONSearchByTag(String tag) {
-		lock.lockRead();
-		JSONObject obj = super.getJSONSearchByTag(tag);
-		lock.unlockRead();
-		return obj;
+		try{
+			lock.lockRead();
+			return super.getJSONSearchByTag(tag);
+		} finally {
+			lock.unlockRead();
+		}
 	}
 
 	@Override
 	public JSONObject getJSONSearchByArtist(String artist) {
-		lock.lockRead();
-		JSONObject obj = super.getJSONSearchByArtist(artist);
-		lock.unlockRead();
-		return obj;
+		try{	
+			lock.lockRead();
+			return super.getJSONSearchByArtist(artist);
+		}finally{
+			lock.unlockRead();
+		}
+			
 	}
 
 	@Override
 	public JSONObject getJSONSearchByTitle(String title) {
-		lock.lockRead();
-		JSONObject obj = super.getJSONSearchByTitle(title);
-		lock.unlockRead();
-		return obj;
+		try{
+			lock.lockRead();
+			return super.getJSONSearchByTitle(title);
+		} finally {
+			lock.unlockRead();
+		}
 	}
 
 	/******************* METHODS FOR DEBUGGING ***********************/
