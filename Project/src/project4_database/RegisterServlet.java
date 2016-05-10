@@ -29,6 +29,7 @@ public class RegisterServlet extends BaseServlet{
 			+"<input type=\"text\" name=\"password2\"/><br/>"
 			+"<input type=\"submit\" value=\"Register New User\"/>"
 			+"</form></center>";
+	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException{
 		
 		PrintWriter out = prepareResponse(response);
@@ -37,18 +38,12 @@ public class RegisterServlet extends BaseServlet{
 	}
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException{
-//		System.out.println("------------Register Servlet--------------");
 		String firstName = request.getParameter("firstname");
 		String lastName = request.getParameter("lastname");
 		String userName = request.getParameter("username");
 		String password1 = request.getParameter("password1");
 		String password2 = request.getParameter("password2");
-		
-//		System.out.println(firstName);
-//		System.out.println(lastName);
-//		System.out.println(userName);
-//		System.out.println(password1);
-//		System.out.println(password2);
+
 		PrintWriter out = prepareResponse(response);
 		String errorResponse= " ";
 		if(firstName.isEmpty()) {
@@ -80,30 +75,22 @@ public class RegisterServlet extends BaseServlet{
 			return;
 		} 
 		else {
-//		System.out.println(errorResponse);
-//			System.out.println("creating new user...");
-//			UserProfile newUser = new UserProfile(firstName, lastName, userName, password1);
-			
 			try {
-//				System.out.println("verify username: " + DBHelper.verifyUsername(userName));
 				if(DBHelper.verifyUsername(userName)){
 					out.println("<center><font color=\"red\">Username already Exists!</font></center>");
 					return;
 				
 				} else if(DBHelper.insertUser(firstName, lastName, userName, password1)){
-//					System.out.println("user inserted");
 					HttpSession session = request.getSession();
 					session.setAttribute(USERNAME, userName);
 					session.setAttribute(PASSWORD, password1);
 					response.sendRedirect(response.encodeRedirectURL("/search"));
-//					session.setAttribute(USER_PROFILE, newUser);
 				}
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
-//			System.out.println("------------End of Register Servlet--------------");
 		
 	}
 	

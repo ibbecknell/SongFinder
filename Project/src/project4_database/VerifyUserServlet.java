@@ -24,7 +24,6 @@ public class VerifyUserServlet extends BaseServlet {
 
 		String username = request.getParameter(USERNAME);
 		String password = request.getParameter(PASSWORD);
-//		System.out.println("username: " + username);
 		
 		if(username == null || username.trim().equals("") || username.isEmpty() && password == null || password.trim().equals("") || password.isEmpty()) {
 
@@ -32,27 +31,15 @@ public class VerifyUserServlet extends BaseServlet {
 			return;
 		}
 
-		
-		//map id to name and userinfo
-//		DBHelper data = (DBHelper) getServletConfig().getServletContext().getAttribute(DATA);
-
 		try {
-//			System.out.println("password: " + password);
-//			System.out.println("---------verify user-----------");
 			if(DBHelper.verifyUser(username, password)){
-//				System.out.println("user is in the database");
 				HttpSession session = request.getSession();
 				session.setAttribute(USERNAME, username);
 				session.setAttribute(PASSWORD, password);
-//				session.setAttribute(USER_FAVS, new ArrayList<JSONObject>());
-//				session.setAttribute(USER_PROFILE, DBHelper.getUser(FIRST_NAME, LAST_NAME, USERNAME, PASSWORD));
 				response.sendRedirect(response.encodeRedirectURL("/search"));
-//				System.out.println("------------end of verify search------------");
 				return;
 			} else {
-//				System.out.println("username: " + username + " not in db");
 				response.sendRedirect(response.encodeRedirectURL("/?" + STATUS + "=" + ERROR));
-//				System.out.println("------------end of verify search------------");
 				return;
 			}
 			
@@ -60,9 +47,7 @@ public class VerifyUserServlet extends BaseServlet {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		//redirect to list
-//		response.sendRedirect(response.encodeRedirectURL("/search"));
+
 		
 	}
 }

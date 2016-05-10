@@ -22,6 +22,7 @@ public class SongsServlet extends BaseServlet {
 		String password = (String) session.getAttribute(PASSWORD);
 		PrintWriter writer = prepareResponse(response);
 		String headResponseHtml = writeHTML();
+		
 		//user is not logged in, redirect to login page
 		try {
 			if(name == null || !DBHelper.verifyUser(name, password)) {
