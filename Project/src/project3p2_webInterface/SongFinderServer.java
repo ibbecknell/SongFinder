@@ -66,6 +66,9 @@ public class SongFinderServer {
 		servhandler.addServlet(RegisterServlet.class, "/register");
 		
 		servhandler.addServlet(LogoutServlet.class, "/logout");
+		
+		servhandler.addServlet(UserFavServlet.class, "/user_favorites");
+		
 		// set the list of handlers for the server
 		server.setHandler(servhandler);
 

@@ -13,9 +13,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import comparators.ByArtistComparator;
-import comparators.ByIdComparator;
 import comparators.ByTitleComparator;
-import project3p1_querybuilding.QueryWriter;
 
 /**
  * Maintains a music library of several songs.
@@ -120,6 +118,10 @@ public class MusicLibrary {
 		return similarTagSongs;
 	}
 	
+	public JSONObject searchById(String trackId){
+		return this.idMap.get(trackId).toJSON();
+	}
+	
 	public boolean hasArtist(String artist){
 		return artistMap.containsKey(artist);
 	}
@@ -152,6 +154,7 @@ public class MusicLibrary {
 		obj.put("title", title);
 		return obj;
 	}
+	
 
 	/**
 	 * Add a song to the library. Adds a reference to the song object to all

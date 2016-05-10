@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import project3p2_webInterface.BaseServlet;
 
@@ -36,56 +37,73 @@ public class RegisterServlet extends BaseServlet{
 	}
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException{
+//		System.out.println("------------Register Servlet--------------");
 		String firstName = request.getParameter("firstname");
 		String lastName = request.getParameter("lastname");
 		String userName = request.getParameter("username");
 		String password1 = request.getParameter("password1");
 		String password2 = request.getParameter("password2");
 		
-		
-		PrintWriter out = prepareResponse(response);		
+//		System.out.println(firstName);
+//		System.out.println(lastName);
+//		System.out.println(userName);
+//		System.out.println(password1);
+//		System.out.println(password2);
+		PrintWriter out = prepareResponse(response);
 		String errorResponse= " ";
 		if(firstName.isEmpty()) {
 			errorResponse = errorResponse + "<center><br/>Please enter your first name";
 
 		}
 		if(lastName.isEmpty()) {
-			errorResponse = errorResponse + "<br/> Please enter your last name";
+			errorResponse = errorResponse + "<center><br/> Please enter your last name";
 
 		}
 		if(userName.isEmpty()){
-			errorResponse = errorResponse + "<br/> Please enter a username";
+			errorResponse = errorResponse + "<center><br/> Please enter a username";
 
 		}
 		if(password1.isEmpty()){
-			errorResponse = errorResponse + "<br/> Please enter a password";
+			errorResponse = errorResponse + "<center><br/> Please enter a password";
 
 		}
 		if(password2.isEmpty()){
-			errorResponse = errorResponse + "<br/> Please re-enter your password";
+			errorResponse = errorResponse + "<center><br/> Please re-enter your password";
 
 		}
 		if(!password1.equals(password2)){
-			errorResponse = errorResponse + "<br/> Passwords do not match!";
+			errorResponse = errorResponse + "<center><br/> Passwords do not match!";
 		}
 
-		if(!errorResponse.isEmpty()){
-			out.println(responseHtml + errorResponse ); 
-		}
+		if(!errorResponse.trim().isEmpty()){
+			out.println(responseHtml + errorResponse );
+			return;
+		} 
+		else {
 //		System.out.println(errorResponse);
-			System.out.println("creating new user...");
-			UserProfile newUser = new UserProfile(firstName, lastName, userName, password1);
+//			System.out.println("creating new user...");
+//			UserProfile newUser = new UserProfile(firstName, lastName, userName, password1);
+			
 			try {
-				if(DBHelper.insertUser(newUser)){
+//				System.out.println("verify username: " + DBHelper.verifyUsername(userName));
+				if(DBHelper.verifyUsername(userName)){
+					out.println("<center><font color=\"red\">Username already Exists!</font></center>");
+					return;
+				
+				} else if(DBHelper.insertUser(firstName, lastName, userName, password1)){
+//					System.out.println("user inserted");
+					HttpSession session = request.getSession();
+					session.setAttribute(USERNAME, userName);
+					session.setAttribute(PASSWORD, password1);
 					response.sendRedirect(response.encodeRedirectURL("/search"));
+//					session.setAttribute(USER_PROFILE, newUser);
 				}
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		
-		
-		
+		}
+//			System.out.println("------------End of Register Servlet--------------");
 		
 	}
 	

@@ -80,6 +80,16 @@ public class ThreadSafeMusicLibrary extends MusicLibrary {
 			lock.unlockRead();
 		}
 	}
+	
+	@Override
+	public JSONObject searchById(String trackId){
+		try{
+			lock.lockRead();
+			return super.searchById(trackId);
+		} finally {
+			lock.unlockRead();
+		}
+	}
 
 	/******************* METHODS FOR DEBUGGING ***********************/
 	@Override

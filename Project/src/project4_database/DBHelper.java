@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 public class DBHelper {
@@ -23,7 +24,7 @@ public class DBHelper {
 	 * @param dbconfig
 	 * @throws SQLException
 	 */
-	public static void createUserTable(UserProfile user) throws SQLException {		
+	public static void createUserTable() throws SQLException {		
 		Connection con = getConnection();
 		
 		String sql = "CREATE TABLE user(" 
@@ -35,6 +36,20 @@ public class DBHelper {
 		
 		con.close();
 	}
+	
+	public static void createFavsTable() throws SQLException {		
+		Connection con = getConnection();
+		
+		String sql = "CREATE TABLE favorites("  
+				+ "username VARCHAR(100) primary key not null,"
+				+ "artist VARCHAR(100) not null,"
+				+ "title VARCHAR(100) not null);";
+		PreparedStatement st =con.prepareStatement(sql);
+		st.executeUpdate();
+		
+		con.close();
+	}
+	
 	/**
 	 * A helper method that returns a database connection.
 	 * A calling method is responsible for closing the connection when finished.
@@ -71,52 +86,114 @@ public class DBHelper {
 		return con;
 	}
 
-	/**
-	 * If the artist table exists in the database, removes that table.
-	 * 
-	 * @param dbconfig
-	 * @param tables
-	 * @throws SQLException
-	 */
-	public static void clearTables(UserProfile user, ArrayList<String> tables) throws SQLException {
 
+	public static JSONArray getFavorites(String username) throws SQLException{
+		
+		JSONArray favs = new JSONArray();
 		Connection con = getConnection();
-
-		for(String table: tables) {
-			//create a statement object
-			Statement stmt = con.createStatement();
-			if(tableExists(con, table)) {
-				System.out.println("table exists");
-				String dropStmt = "DROP TABLE " + table;
-				stmt.executeUpdate(dropStmt);
-			}
+		
+		String selectStmt = "SELECT * FROM favorites where username = \"" + username+"\"";
+		
+		PreparedStatement stmt = con.prepareStatement(selectStmt);
+		
+		ResultSet result = stmt.executeQuery();
+		
+		while(result.next()){
+//			String currentUsername = result.getString("username");
+			String currentTrackId = result.getString("trackId");
 			
+//			if(currentUsername.equals(username)){
+				JSONObject userFavs = new JSONObject();
+				userFavs.put("trackId", currentTrackId );
+				favs.add(userFavs);
+//			}
+		}
+		
+		con.close();
+		return favs;
+	}
+	
+	public static boolean insertFavorite(String username, String trackId) throws SQLException{
+		Connection con = getConnection();
+		if(verifyFav(username, trackId)){
+			return false;
+		}
+		String selectStmt = "SELECT * FROM favorites";
+		
+		PreparedStatement stmt = con.prepareStatement(selectStmt);
+		
+		ResultSet result = stmt.executeQuery();
+
+		
+		PreparedStatement updateStmt = con.prepareStatement("INSERT INTO favorites (username, trackId) VALUES (?, ?);");
+		updateStmt.setString(1, username);
+		updateStmt.setString(2, trackId);
+		
+		updateStmt.execute();
+		
+		result = stmt.executeQuery();
+
+		con.close();
+		return true;
+	}
+	
+	public static boolean verifyFav(String username, String trackId) throws SQLException{
+		boolean hasFav = false;
+		Connection con = getConnection();
+		
+		String selectStmt = "SELECT * FROM favorites";
+			
+		PreparedStatement stmt = con.prepareStatement(selectStmt);
+			
+		ResultSet result = stmt.executeQuery();
+	
+			
+		while(result.next()){
+			String currentUsername = result.getString("username");
+			String currentTrackId = result.getString("trackId");
+			
+			if(currentUsername.equals(username) && currentTrackId.equals(trackId)){
+				hasFav = true;
+				con.close();
+				return hasFav;
+			}
 		}
 		con.close();
+		return hasFav;
 	}
+	
+	
+	
+	public static boolean removeFav(String username, String trackId) throws SQLException{
+		Connection con = getConnection();
+		
+		if(verifyFav(username, trackId)){
+			String selectStmt = "SELECT * FROM favorites WHERE username = ?";
+			
+			PreparedStatement stmt = con.prepareStatement(selectStmt);
+//			String deleteStmt = "DELETE FROM CUSTOMERS WHERE username = \"" + username + "\" AND trackId = \"" + trackId +"\"";
+			
+//			PreparedStatement stmt = con.prepareStatement(deleteStmt);
+			
+//			ResultSet result = stmt.executeQuery();
+			
+			PreparedStatement updateStmt = con.prepareStatement("DELETE FROM favorites WHERE username = ? AND trackId = ?;");
+			updateStmt.setString(1,username);
+			updateStmt.setString(2, trackId);
 
-	/**
-	 * Helper method that determines whether a table exists in the database.
-	 * @param con
-	 * @param table
-	 * @return
-	 * @throws SQLException
-	 */
-	private static boolean tableExists(Connection con, String table) throws SQLException {
-
-		DatabaseMetaData metadata = con.getMetaData();
-		ResultSet resultSet;
-		resultSet = metadata.getTables(null, null, table, null);
-
-		if(resultSet.next()) {
-			// Table exists
+			
+//			System.out.println();
+			updateStmt.execute();
+			
+			con.close();
 			return true;
-		}		
+		}
 		return false;
 	}
 	
-	public static boolean insertUser(UserProfile user) throws SQLException{
-		if(verifyUser(user.getUsername(), user.getPassword())){
+	
+	public static boolean insertUser(String firstname, String lastname, String username, String password) throws SQLException{
+		if(verifyUser(username, password)){
 			return false;
 		}
 		Connection con = getConnection();
@@ -128,37 +205,99 @@ public class DBHelper {
 		ResultSet result = stmt.executeQuery();
 
 		
-		while(result.next()){
-//			System.out.println(result);
-			String userName =result.getString("name");
-			String username = result.getString("username");
-			String password = result.getString("password");
-			
-			System.out.printf("name: %s, username: %s, password: %s", userName, username, password);
-		}
+//		while(result.next()){
+////			System.out.println(result);
+//			String userName =result.getString("name");
+//			String user_name = result.getString("username");
+//			String password = result.getString("password");
+//			
+////			System.out.printf("name: %s, username: %s, password: %s", userName, username, password);
+//		}
 		
 		PreparedStatement updateStmt = con.prepareStatement("INSERT INTO user (name, username, password) VALUES (?, ?, ?);");
-		updateStmt.setString(1, user.firstName+ " " + user.lastName);
-		updateStmt.setString(2, user.username);
-		updateStmt.setString(3, user.password);
+		updateStmt.setString(1, firstname+ " " + lastname);
+		updateStmt.setString(2, username);
+		updateStmt.setString(3, password);
 		
-		System.out.println();
+//		System.out.println();
 		updateStmt.execute();
-		System.out.println("\n*****\n");
+//		System.out.println("\n*****\n");
 		
 		result = stmt.executeQuery();
 		
-		while(result.next()){
-//			System.out.println(result);
-			String userName =result.getString("name");
-			String username = result.getString("username");
-			String password = result.getString("password");
-			
-			System.out.printf("\n name: %s, username: %s, password: %s", userName, username, password);
-		}
+//		while(result.next()){
+////			System.out.println(result);
+//			String userName =result.getString("name");
+//			String username = result.getString("username");
+//			String password = result.getString("password");
+//			
+////			System.out.printf("\n name: %s, username: %s, password: %s", userName, username, password);
+//		}
 		con.close();
 		return true;
 	}
+	
+	public static boolean verifyUsername(String username) throws SQLException{
+		boolean hasUsername = false;
+		Connection con = getConnection();
+		
+		String selectStmt = "SELECT * FROM user";
+			
+		PreparedStatement stmt = con.prepareStatement(selectStmt);
+			
+		ResultSet result = stmt.executeQuery();
+	
+			
+		while(result.next()){
+			String currentUsername = result.getString("username");
+			
+			if(currentUsername.equals(username)){
+				hasUsername = true;
+				con.close();
+				return hasUsername;
+			}
+		}
+		con.close();
+		return hasUsername;
+	}
+	
+//	public static UserProfile getUser(String username, String password) throws SQLException{
+//		Connection con = getConnection();
+//		
+////		if(!tableExists(con, "user")){
+////			createUserTable(user);
+////		}
+//		
+//		String selectStmt = "SELECT * FROM user";
+//			
+//		PreparedStatement stmt = con.prepareStatement(selectStmt);
+//			
+//		ResultSet result = stmt.executeQuery();
+//	
+//			
+//		while(result.next()){
+//			String currentUsername = result.getString("username");
+//			String currentPassword = result.getString("password");
+////			String currentFName = result.getString("firstname");
+//			
+////			System.out.println("username: " + currentUsername + " vs " + username + ": " + currentUsername.equals(username));
+////			System.out.println("password: " + currentPassword + " vs " + password + ": " + currentPassword.equals(password));
+//			
+//			if(currentUsername.equals(username) && currentPassword.equals(password)){
+////				System.out.println("user is present in database");
+//				String name = result.getString("name");
+////				hasUser = true;
+//				UserProfile user = new UserProfile(username, password);
+//				con.close();
+//				return user;
+//				
+//				
+//			}
+//		}
+//		con.close();
+//		return null;
+//		
+//	}
 	
 	public static boolean verifyUser(String username, String password) throws SQLException{
 		
@@ -184,7 +323,7 @@ public class DBHelper {
 //			System.out.println("password: " + currentPassword + " vs " + password + ": " + currentPassword.equals(password));
 			
 			if(currentUsername.equals(username) && currentPassword.equals(password)){
-				System.out.println("user is present in database");
+//				System.out.println("user is present in database");
 				hasUser = true;
 //				con.close();
 				return hasUser;
@@ -193,4 +332,5 @@ public class DBHelper {
 		con.close();
 		return hasUser;
 	}
+	
 }
