@@ -61,6 +61,8 @@ public class SongFinderServer {
 		//add a servlet to login
 		servhandler.addServlet(LoginServlet.class, "/");
 		
+		servhandler.addServlet(LoginServlet.class, "/login");
+		
 		servhandler.addServlet(VerifyUserServlet.class, "/verifyuser");
 		
 		servhandler.addServlet(RegisterServlet.class, "/register");

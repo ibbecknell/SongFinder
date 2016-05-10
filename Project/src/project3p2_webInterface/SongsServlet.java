@@ -22,7 +22,6 @@ public class SongsServlet extends BaseServlet {
 		String password = (String) session.getAttribute(PASSWORD);
 		PrintWriter writer = prepareResponse(response);
 		String headResponseHtml = writeHTML();
-		
 		//user is not logged in, redirect to login page
 		try {
 			if(name == null || !DBHelper.verifyUser(name, password)) {
@@ -90,7 +89,7 @@ public class SongsServlet extends BaseServlet {
 						+ "<tr><th>Artist</th><th>Song Title</th><th>Favorite</th></tr>";
 
 				try {
-					responseHtml = getArray(name,searchByArray, responseHtml, request, response) + "</table>";
+					responseHtml = getArray(name,searchByArray, responseHtml, request, response) + "</table>" + writeFavs();
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -108,20 +107,20 @@ public class SongsServlet extends BaseServlet {
 		for (int i = 0; i < students.size(); i++) {
 			JSONObject student = (JSONObject) students.get(i);
 			responseHTML = responseHTML.concat("<tr><td>" + (String) student.get("artist").toString() + "</td><td>"
-					+ (String) student.get("title").toString() + "</td><td><center>"+ verifyFav(student,name, (String) student.get("artist").toString(), student.get("title").toString(), student.get("trackId").toString()) + "</center></td></tr>");
+					+ (String) student.get("title").toString() + "</td><td><center>"+ verifyFav(name, student.get("title").toString(), student.get("trackId").toString()) + "</center></td></tr>");
 		}
 		return responseHTML;
 	}
 	
-	private String verifyFav(JSONObject student, String username, String artist, String title, String trackId){
-		String response= "<a id = \"link\" href=\"user_favorites?artist="+artist+"&title="+title+"&trackId="+trackId+"\">Add to Favs!</a>";
+	private String verifyFav(String username, String title, String trackId){
+		String response= "<a id = \"link\" href=\"user_favorites?title="+title+"&trackId="+trackId+"\">Add to Favs!</a>";
 		try {
 			if(DBHelper.verifyFav(username, trackId)){
 				
 				response = "Liked!";
 			} else {
 				
-				response = "<a id = \"link\" href=\"user_favorites?artist="+artist+"&title="+title+"&trackId="+trackId+"\">Add to Favs!</a>";
+				response = "<a id = \"link\" href=\"user_favorites?title="+title+"&trackId="+trackId+"\">Add to Favs!</a>";
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

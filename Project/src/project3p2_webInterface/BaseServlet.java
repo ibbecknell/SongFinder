@@ -24,6 +24,7 @@ public class BaseServlet extends HttpServlet {
 	public static final String STATUS = "status";
 	public static final String ERROR = "error";
 	public static final String NOT_LOGGED_IN = "not_logged_in";
+	public static final String USER_EXISTS = "user_exists";
 	public static final String LOGGED_OUT = "logged_out";
 	public static final String QUERYTYPE ="queryType";
 	public static final String SONGQUERY = "songquery";

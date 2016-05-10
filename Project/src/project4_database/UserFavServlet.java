@@ -17,7 +17,7 @@ import project2_multithreading.ThreadSafeMusicLibrary;
 import project3p2_webInterface.BaseServlet;
 
 public class UserFavServlet extends BaseServlet{
-//	public static final ArrayList<JSONObject> FAVS = new ArrayList<JSONObject>();
+
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
 		HttpSession session = request.getSession();
@@ -25,27 +25,25 @@ public class UserFavServlet extends BaseServlet{
 		String password = (String) session.getAttribute(PASSWORD);
 		String trackId = request.getParameter("trackId");
 		String title = request.getParameter("title");
+		String querytype = (String)session.getAttribute(QUERYTYPE);
+		String songquery = (String)session.getAttribute(SONGQUERY);
 
 		try {
 			if(name == null || !DBHelper.verifyUser(name, password)) {
 				response.sendRedirect(response.encodeRedirectURL("/?" + STATUS + "=" + NOT_LOGGED_IN));
 				return;
-			}else if(!DBHelper.verifyFav(name, trackId)){
-
+			}else if(name != null && trackId != null && !DBHelper.verifyFav(name, trackId)){
 				DBHelper.insertFavorite(name, trackId);
+				response.sendRedirect(response.encodeRedirectURL("/songs?queryType="+querytype+"&songquery="+songquery));
+				return;
+			} else if(trackId == null || title == null){
+				response.sendRedirect(response.encodeRedirectURL("/songs?"));
+				return;
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-
-		PrintWriter writer = prepareResponse(response);
-
-
-		writer.println( writeUserInfo(name) + writeHTML() + "Added \"" + title + "\" to your favorites! </br> </br>Continue your search or look at your Favorites!</br>");
-		writer.println("<form action=\"user_favorites\" method=\"post\">"
-				+ "<input type=\"submit\" value=\"Go to Favorites List\"></form>");
 		
 	}
 	
@@ -87,7 +85,7 @@ public class UserFavServlet extends BaseServlet{
 		
 		writer.println(writeUserInfo(name) + writeHTML() + name +"'s Favorites List!</br>");
 		String responseHtml = "<br/><table border=\"2px\" width=\"100%\">"
-						+ "<form action=\"user_favorites\" method=\"post\">"+"<tr><th>Artist</th><th>Song Title</th><th>Remove</th></tr>";
+						+ "<form action=\"user_favorites\" method=\"post\">"+"<tr><th>Artist</th><th>Song Title</th><th>Remove From Favorites</th></tr>";
 			responseHtml = readFavs(favs, responseHtml, request, response) + "</table>"+ "</br><input type=\"submit\" value=\"Remove Favorite(s)\"></form>" ;
 			
 		writer.println(responseHtml);

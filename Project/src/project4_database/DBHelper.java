@@ -76,7 +76,7 @@ public class DBHelper {
 		// format "jdbc:mysql://[hostname][:port]/[dbname]"
 		//note: if connecting through an ssh tunnel make sure to use 127.0.0.1 and
 		//also to that the ports are set up correctly
-		String host = "127.0.0.1";
+		String host = "sql.cs.usfca.edu";
 		String port = "3306";
 		String urlString = "jdbc:mysql://" + host + ":" + port + "/"+db;
 		Connection con = DriverManager.getConnection(urlString,

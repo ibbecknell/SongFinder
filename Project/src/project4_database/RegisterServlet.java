@@ -77,7 +77,7 @@ public class RegisterServlet extends BaseServlet{
 		else {
 			try {
 				if(DBHelper.verifyUsername(userName)){
-					out.println("<center><font color=\"red\">Username already Exists!</font></center>");
+					out.println(responseHtml + "<center><font color=\"red\">Username already Exists!</font></center>");
 					return;
 				
 				} else if(DBHelper.insertUser(firstName, lastName, userName, password1)){
