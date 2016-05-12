@@ -87,6 +87,7 @@ public class DBHelper {
 	}
 
 
+//TODO: consider modifying to return a list of Strings (Array list of track id)
 	public static JSONArray getFavorites(String username) throws SQLException{
 		
 		JSONArray favs = new JSONArray();
