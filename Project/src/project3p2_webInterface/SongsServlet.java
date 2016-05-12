@@ -104,6 +104,7 @@ public class SongsServlet extends BaseServlet {
 	}
 
 	private String getArray(String name, JSONArray students, String responseHTML, HttpServletRequest request, HttpServletResponse response) throws SQLException {
+//TODO: students is not an appropriate variable name.		
 		for (int i = 0; i < students.size(); i++) {
 			JSONObject student = (JSONObject) students.get(i);
 			responseHTML = responseHTML.concat("<tr><td>" + (String) student.get("artist").toString() + "</td><td>"
