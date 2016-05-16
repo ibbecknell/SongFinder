@@ -58,7 +58,7 @@ public class BaseServlet extends HttpServlet {
 				+" Query: <input type=\"text\" name=\"songquery\"> "
 				+ "<input type=\"submit\" value=\"Submit\"></form></p>"
 				+"<form action=\"view_all\" method=\"post\">"
-				+ " View All Artists : <select name = \"sortBy\"><optgroup><option value = \"artist\">Alphabetically by Artist</option><option value = \"playcount\">By Playcount</option></optgroup></select>"
+				+ " View All Artists: <select name = \"sortBy\"><optgroup><option value = \"artist\">Alphabetically by Artist</option><option value = \"playcount\">By Playcount</option></optgroup></select> "
 				+ "<input type=\"submit\" value=\"View All\"></form></p>";
 		return responseHtml;
 	}
