@@ -192,7 +192,7 @@ public class LastFMClient {
 			}
 
 		} catch (IOException e) {
-			System.out.println("LastfmClient::download " + e.getMessage());
+			System.out.println("LastfmClient::download " + e.getMessage() + path);
 		}
 		return buf.toString();
 	}
@@ -215,7 +215,7 @@ public class LastFMClient {
 			lib = new ThreadSafeMusicLibrary();
 		}
 		ArrayList<String> artists = lib.getArtists();	
-		
+//		System.out.println(artists.size());
 		fetchAndStoreArtists(artists);
 		
 	}

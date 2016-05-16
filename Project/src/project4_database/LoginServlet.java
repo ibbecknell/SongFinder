@@ -53,10 +53,14 @@ public class LoginServlet extends BaseServlet{
 		+ "<h1><center> Welcome to Song Finder!</center></h1><br/>"
 		+"<h3><center>Please Enter your username and password, or register</center></h3>"
 		+"<center><form name=\"name\" action=\"verifyuser\" method=\"post\">"
-		+ "Username:"
+//		User name:<br>
+//		  <input type="text" name="username"><br>
+//		  User password:<br>
+//		  <input type="password" name="psw">
+		+ "Username:<br>"
 		+"<input type=\"text\" name=\"username\"/><br/>"
-		+"<br/>Password:"
-		+"<input type=\"text\" name=\"password\"/><br/>"
+		+"<br/>Password:<br>"
+		+"<input type=\"password\" name=\"password\"/><br/>"
 		+"<br/><input type=\"submit\" value=\"Login\"/>"
 		+"</form>"
 		+ "<form name=\"newUser\" action=\"register\" method=\"get\"> "
