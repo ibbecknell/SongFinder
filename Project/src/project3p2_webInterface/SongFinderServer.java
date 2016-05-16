@@ -14,6 +14,7 @@ import project1_librarybuilding.MusicLibraryBuilder;
 import project2_multithreading.ThreadSafeMusicLibrary;
 import project4_database.LoginServlet;
 import project5_additionalFeatures.ArtistInfoServlet;
+import project5_additionalFeatures.UpdatePasswordServlet;
 import project5_additionalFeatures.ViewAllServlet;
 import project4_database.*;
 
@@ -79,6 +80,10 @@ public class SongFinderServer {
 		servhandler.addServlet(ViewAllServlet.class, "/view_all");
 		
 		servhandler.addServlet(ArtistInfoServlet.class, "/artist_info");
+		
+		servhandler.addServlet(UpdatePasswordServlet.class, "/update_password");
+		
+		servhandler.addServlet(FavoritesListServlet.class, "/favs_list");
 		
 		// set the list of handlers for the server
 		server.setHandler(servhandler);

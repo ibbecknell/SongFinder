@@ -78,7 +78,7 @@ public class MusicLibrary {
 
 	private JSONArray searchByArtist(String artist) {
 		TreeSet<String> resultList = new TreeSet<String>();
-		if (this.artistMap.get(artist) != null) {
+		if(this.artistMap.get(artist) != null) {
 			for (Song s : this.artistMap.get(artist)) {
 				ArrayList<String> similarList = s.getSimList();
 				for (String similarSong : similarList) {

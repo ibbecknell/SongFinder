@@ -40,7 +40,7 @@ public class BaseServlet extends HttpServlet {
 
 	protected String writeHTML() {
 		String responseHtml = "<html>" + "<head><title>Song Finder</title>"
-				+ "<style> tr:hover {background-color: #f5f5f5} body{margin: 25px; background-color: gray; font: 15px arial, sans-serif; } p {  padding-top: 1%; border-top: solid; border-top-width: 1px; border-top-color: #A9A9A9; }</style>"
+				+ "<style> th{height: 80px} tr:hover {background-color: #141f1f}  a{color: #75a3a3;} body{ color: #75a3a3; margin: 25px; background-color: #0a0f0f; font: 15px Verdana, Geneva, sans-serif; } p {  padding-top: 1%; border-top: solid; border-top-width: 1px; border-top-color: #A9A9A9; }</style>"
 				+ "</head>" + "<body>" + "<h1><center>Song Finder</center></h1>"
 				+ "<form action=\"songs\" method=\"get\">"
 				+ "Welcome to song finder! Search for an artist, song title, or tag and we will give you a list of similar songs you might like.<br/>"
@@ -55,7 +55,62 @@ public class BaseServlet extends HttpServlet {
 	}
 	
 	protected String writeUserInfo(String name){
-		String responseHtml ="<style> div { position: absolute; right: 50px; width: 300px; padding: 0px;}</style><div>Hello, "+ name + "! | " +writeLogout()+writeFavs() + "</div>";
+		String responseHtml ="<style> div { position: absolute; right: 50px; width: 300px; padding: 0px;}</style><div>Hello, "+ name + "! | " +writeLogout()+ writeDropdown()+ "</div>";
+//		+writeFavs() + "</div>";
+		return responseHtml;
+	}
+	
+//	http://www.w3schools.com/css/css_dropdowns.asp
+	protected String writeDropdown(){
+		String responseHtml = "<style>.dropbtn {"
+											+"background-color: #75a3a3;"
+										    + "color: 0a0f0f;"
+											+ "width: 220px;"
+										    + "height: 40px"
+										    + "padding: 14px;"
+										    +"font-size: 14px;"
+										    +"border: none;"
+										    +"cursor: pointer;"
+										+"}"
+									
+									  +".dropdown {"
+									    	+"position: relative;"
+									    	+"display: inline-block;"
+										+"}"
+									
+									+ ".dropdown-content {"
+									    +"display: none;"
+									    +"position: absolute;"
+									    +"background-color: #ccc6b3"
+									    +"min-width: 160px;"
+									    +"box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);"
+									+"}"
+									
+									+".dropdown-content a {"
+									    +"color: #75a3a3;"
+									    +"padding: 12px 16px;"
+									    +"text-decoration: none;"
+									    +"display: block;"
+									+"}"
+									
+									+".dropdown-content a:hover {background-color: #f1f1f1}"
+									
+									+".dropdown:hover .dropdown-content {"
+									    +"display: block;"
+									+"}"
+									
+									+".dropdown:hover.dropbtn {"
+									    +"background-color: #f5f4f0;"
+									+"}"
+								+"</style>"
+							+"<div class=\"dropdown\">"
+							+"<button class=\"dropbtn\">User Options</button>"
+							+"<div class=\"dropdown-content\">"
+								+ "<a href=\"favs_list\">Go to Favorites List</a>"
+								+ "<a href=\"update_password\">Update Password</a>"
+//								+"<a href=\"#\">Link 3</a>"
+							+"</div>"
+							+"</div>";
 		return responseHtml;
 	}
 	

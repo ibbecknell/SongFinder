@@ -50,6 +50,27 @@ public class DBHelper {
 //		con.close();
 //	}
 	
+	public static void updatePassword(String username, String password)throws SQLException{
+		System.out.println("updating password for " + username);
+		Connection con = getConnection();
+		String selectStmt = "SELECT * FROM user ";
+		
+//		PreparedStatement stmt = con.prepareStatement(selectStmt);
+		
+//		String updateStmt = "UPDATE user SET password=" + password+"WHERE username =" + username; 
+//		PreparedStatement stmt = con.prepareStatement(selectStmt);
+
+//		ResultSet result = stmt.executeQuery();
+		
+//		while(result.next()){
+			PreparedStatement updateStmt = con.prepareStatement("UPDATE user SET password=? WHERE username =?" );
+			updateStmt.setString(1, password);
+			updateStmt.setString(2,username);
+			updateStmt.execute();
+//		}
+		con.close();
+	}
+	
 	/**
 	 * A helper method that returns a database connection.
 	 * A calling method is responsible for closing the connection when finished.

@@ -84,7 +84,7 @@ public class ViewAllServlet extends BaseServlet{
 
 	private String getArtistsBy(ArrayList<String> artistsBy, JSONArray songs, String responseHTML) throws SQLException{
 		for(String a : artistsBy){
-			responseHTML= responseHTML.concat("<tr><td>" +"<a href=\"artist_info?artist=" +a+"\">"+a+"</a>");
+			responseHTML= responseHTML.concat("<tr><td><center>" +"<a href=\"artist_info?artist=" +a+"\">"+a+"</a></center>");
 		}
 		return responseHTML;
 	}

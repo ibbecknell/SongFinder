@@ -61,11 +61,11 @@ public class SongInfoServlet extends BaseServlet{
 	}
 	
 	private void writeSimilars(JSONArray similars, PrintWriter writer){
-		String similar = null;
+//		String similar = null;
 		
 		for(int i = 0; i<similars.size(); i++){
 			JSONObject obj = (JSONObject)similars.get(i);
-			writer.write("<tr><td>" + obj.get("artist").toString() + "</td><td>"
+			writer.write("<tr><td>"+"<a href=\"artist_info?artist=" + obj.get("artist").toString()+"\">"+(String) obj.get("artist").toString() + "</a></td><td>"
 			+ "<a href=\"song_info?artist="+ obj.get("title").toString() + "&title="+obj.get("title")+"\">"+(String) obj.get("title").toString() + "</a></td></tr>");
 //			writer.write();
 //			writer.write("\n");
