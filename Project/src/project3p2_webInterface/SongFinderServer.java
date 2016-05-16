@@ -3,6 +3,7 @@ package project3p2_webInterface;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import javax.servlet.Servlet;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
@@ -12,6 +13,7 @@ import org.eclipse.jetty.servlet.ServletContextHandler;
 import project1_librarybuilding.MusicLibraryBuilder;
 import project2_multithreading.ThreadSafeMusicLibrary;
 import project4_database.LoginServlet;
+import project5_additionalFeatures.ArtistInfoServlet;
 import project5_additionalFeatures.ViewAllServlet;
 import project4_database.*;
 
@@ -75,6 +77,8 @@ public class SongFinderServer {
 		servhandler.addServlet(SongInfoServlet.class, "/song_info");
 		
 		servhandler.addServlet(ViewAllServlet.class, "/view_all");
+		
+		servhandler.addServlet(ArtistInfoServlet.class, "/artist_info");
 		
 		// set the list of handlers for the server
 		server.setHandler(servhandler);

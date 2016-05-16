@@ -111,7 +111,7 @@ public class SongsServlet extends BaseServlet {
 		ArrayList<String>favsList = DBHelper.getFavorites(name);
 		for (int i = 0; i < similars.size(); i++) {
 			JSONObject similar = (JSONObject) similars.get(i);
-			responseHTML = responseHTML.concat("<tr><td>" + (String) similar.get("artist").toString() + "</td><td>"
+			responseHTML = responseHTML.concat("<tr><td>" +"<a href=\"artist_info?artist=" +(String) similar.get("artist").toString()+"\">"+(String) similar.get("artist").toString() + "</a></td><td>"
 					+ "<a href=\"song_info?artist="+similar.get("artist")+"&title="+similar.get("title")+"\">"+(String) similar.get("title").toString() 
 					+ "</a></td><td><center>"
 					+ verifyFav(favsList,name, similar.get("title").toString(), similar.get("trackId").toString()) + "</center></td></tr>");

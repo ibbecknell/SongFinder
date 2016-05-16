@@ -102,8 +102,8 @@ public class UserFavServlet extends BaseServlet{
 			JSONObject result = new JSONObject();
 			result = book.searchById(favs.get(i));
 
-			responseHTML = responseHTML.concat("<tr><td>" + (String) result.get("artist").toString() + "</td><td>"
-					+ (String) result.get("title").toString() + "</td><td>"
+			responseHTML = responseHTML.concat("<tr><td>" +"<a href=\"artist_info?artist=" +(String) result.get("artist").toString()+"\">"+(String) result.get("artist").toString()+"</a>" + "</td><td>"
+					+"<a href=\"song_info?artist="+result.get("artist")+"&title="+result.get("title")+"\">"+(String) result.get("title").toString() +"</a></td><td>"
 			 
 					+"<center><input type=\"checkbox\" name=\"remove\" value=\""+result.get("trackId")+"\"></center></td></tr>");
 		}

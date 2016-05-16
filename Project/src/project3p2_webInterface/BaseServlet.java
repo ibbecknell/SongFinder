@@ -40,7 +40,7 @@ public class BaseServlet extends HttpServlet {
 
 	protected String writeHTML() {
 		String responseHtml = "<html>" + "<head><title>Song Finder</title>"
-				+ "<style> p { padding-top: 1%; border-top: solid; border-top-width: 1px; border-top-color: #A9A9A9; }</style>"
+				+ "<style> tr:hover {background-color: #f5f5f5} body{margin: 25px; background-color: gray; font: 15px arial, sans-serif; } p {  padding-top: 1%; border-top: solid; border-top-width: 1px; border-top-color: #A9A9A9; }</style>"
 				+ "</head>" + "<body>" + "<h1><center>Song Finder</center></h1>"
 				+ "<form action=\"songs\" method=\"get\">"
 				+ "Welcome to song finder! Search for an artist, song title, or tag and we will give you a list of similar songs you might like.<br/>"
@@ -69,21 +69,5 @@ public class BaseServlet extends HttpServlet {
 				+ "<input type=\"submit\" value=\"Go to Favorites List\"></form>";
 		return favs;
 	}
-	
-//	protected String writeLogin(){
-//		String login = "<head><title>Song Finder</title></head>"
-//		+ "<h1><center> Welcome to Song Finder!</center></h1><br/>"
-//		+"<h3><center>Please Enter your username and password, or register</center></h3>"
-//		+"<center><form name=\"name\" action=\"verifyuser\" method=\"post\">"
-//		+ "Username:"
-//		+"<input type=\"text\" name=\"username\"/><br/>"
-//		+"<br/>Password:"
-//		+"<input type=\"text\" name=\"password\"/><br/>"
-//		+"<br/><input type=\"submit\" value=\"Login\"/>"
-//		+"</form>"
-//		+ "<form name=\"newUser\" action=\"register\" method=\"get\"> "
-//		+ "<input type=\"submit\" value=\"Register New User\"/></form></center>";
-//		
-//		return login;
-//	}
+
 }

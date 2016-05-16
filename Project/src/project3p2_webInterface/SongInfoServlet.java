@@ -2,6 +2,7 @@ package project3p2_webInterface;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -11,6 +12,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import project2_multithreading.ThreadSafeMusicLibrary;
+import project4_database.DBHelper;
 
 public class SongInfoServlet extends BaseServlet{
 	
@@ -22,7 +24,19 @@ public class SongInfoServlet extends BaseServlet{
 		ThreadSafeMusicLibrary library = (ThreadSafeMusicLibrary) request.getServletContext().getAttribute("musiclibrary");
 		JSONObject result = new JSONObject();
 		JSONArray searchByArray = new JSONArray();
+		String password = (String) session.getAttribute(PASSWORD);
 		
+		try {
+			
+			if(username == null || !DBHelper.verifyUser(username, password)) {
+				response.sendRedirect(response.encodeRedirectURL("/?" + STATUS + "=" + NOT_LOGGED_IN));
+				return;
+			} 
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 		result = library.getJSONSearchByArtist(artist);
 		searchByArray = (JSONArray)result.get("similars");
 		

@@ -49,14 +49,10 @@ public class LoginServlet extends BaseServlet{
 		}
 	}
 	private String writeLogin(){
-		String login = "<head><title>Song Finder</title></head>"
+		String login = "<style>tr:hover {background-color: #141f1f} body{ color: #75a3a3; margin: 25px; background-color: #0a0f0f; font: 15px Verdana, Geneva, sans-serif; } </style><head><title>Song Finder</title></head>"
 		+ "<h1><center> Welcome to Song Finder!</center></h1><br/>"
 		+"<h3><center>Please Enter your username and password, or register</center></h3>"
 		+"<center><form name=\"name\" action=\"verifyuser\" method=\"post\">"
-//		User name:<br>
-//		  <input type="text" name="username"><br>
-//		  User password:<br>
-//		  <input type="password" name="psw">
 		+ "Username:<br>"
 		+"<input type=\"text\" name=\"username\"/><br/>"
 		+"<br/>Password:<br>"

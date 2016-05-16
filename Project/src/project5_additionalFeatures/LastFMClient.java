@@ -215,8 +215,8 @@ public class LastFMClient {
 			lib = new ThreadSafeMusicLibrary();
 		}
 		ArrayList<String> artists = lib.getArtists();	
-//		System.out.println(artists.size());
-		fetchAndStoreArtists(artists);
+		System.out.println(artists.size());
+//		fetchAndStoreArtists(artists);
 		
 	}
 }

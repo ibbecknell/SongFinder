@@ -86,27 +86,67 @@ public class DBHelper {
 
 		return con;
 	}
-
-
-//TODO: consider modifying to return a list of Strings (Array list of track id)
-	public static ArrayList<String> getFavorites(String username) throws SQLException{
+	
+	public static JSONObject getArtistInfo(String artist) throws SQLException{
+		Connection con = getConnection();
+		JSONObject info = new JSONObject();
 		
-		ArrayList<String> favs = new ArrayList<String>();
+		String selectStmt = "SELECT * FROM artist where name = " + "\"" + artist + "\"";
+		PreparedStatement stmt = con.prepareStatement(selectStmt);
+		
+		ResultSet result = stmt.executeQuery();
+		
+		while(result.next()){
+			String name = result.getString("name");	
+			int listeners = result.getInt("listeners");
+			int playcount = result.getInt("playcount");
+			String bio = result.getString("bio");
+			
+			info.put("name", name);
+			info.put("listeners", listeners);
+			info.put("playcount", playcount);
+			info.put("bio", bio);
+		}
+		con.close();
+		return info;
+	}
+	
+	public static ArrayList<String> orderByAlpha() throws SQLException{
+		ArrayList<String> sorted = new ArrayList<String>();
 		Connection con = getConnection();
 		
-		String selectStmt = "SELECT * FROM favorites where username = \"" + username+"\"";
+		String selectStmt = "SELECT * FROM artist ORDER BY name;";
 		
 		PreparedStatement stmt = con.prepareStatement(selectStmt);
 		
 		ResultSet result = stmt.executeQuery();
 		
 		while(result.next()){
-			String currentTrackId = result.getString("trackId");	
-			favs.add(currentTrackId);
+			String current = result.getString("name");	
+			sorted.add(current);
 		}
 		
 		con.close();
-		return favs;
+		return sorted;
+	}
+	
+	public static ArrayList<String> orderByPlaycount() throws SQLException{
+		ArrayList<String> sorted = new ArrayList<String>();
+		Connection con = getConnection();
+		
+		String selectStmt = "SELECT * FROM artist ORDER BY playcount DESC;";
+		
+		PreparedStatement stmt = con.prepareStatement(selectStmt);
+		
+		ResultSet result = stmt.executeQuery();
+		
+		while(result.next()){
+			String current = result.getString("name");	
+			sorted.add(current);
+		}
+		
+		con.close();
+		return sorted;
 	}
 	
 	public static boolean verifyArtist(JSONObject obj) throws SQLException  {
@@ -141,18 +181,6 @@ public class DBHelper {
 		
 		PreparedStatement stmt = con.prepareStatement(selectStmt);
 		
-		ResultSet result = stmt.executeQuery();
-
-		
-//		while(result.next()){
-////			System.out.println(result);
-//			String artistName =result.getString("name");
-//			int artistListeners = result.getInt("listeners");
-//			int artistPlaycount = result.getInt("playcount");
-//			String artistBio = result.getString("bio");
-//			
-//			System.out.printf("name: %s, listeners: %s, playcount: %s, bio: %s", artistName, artistListeners, artistPlaycount, artistBio);
-//		}
 		
 		PreparedStatement updateStmt = con.prepareStatement("INSERT INTO artist (name, listeners, playcount, bio) VALUES (?, ?, ?, ?);");
 		updateStmt.setString(1, obj.get("name").toString());
@@ -160,22 +188,31 @@ public class DBHelper {
 		updateStmt.setInt(3, Integer.parseInt(obj.get("playcount").toString()));
 		updateStmt.setString(4, obj.get("bio").toString());
 		
-//		System.out.println();
 		updateStmt.execute();
-//		System.out.println("\n*****\n");
-		
-		result = stmt.executeQuery();
-		
-//		while(result.next()){
-//			String artistName =result.getString("name");
-//			int artistListeners = result.getInt("listeners");
-//			int artistPlaycount = result.getInt("playcount");
-//			String artistBio = result.getString("bio");
-//			
-//			System.out.printf("name: %s, listeners: %s, playcount: %s, bio: %s\n", artistName, artistListeners, artistPlaycount, artistBio);
-//		}
+
 		con.close();
 	}
+	
+	//TODO: consider modifying to return a list of Strings (Array list of track id)
+		public static ArrayList<String> getFavorites(String username) throws SQLException{
+			
+			ArrayList<String> favs = new ArrayList<String>();
+			Connection con = getConnection();
+			
+			String selectStmt = "SELECT * FROM favorites where username = \"" + username+"\"";
+			
+			PreparedStatement stmt = con.prepareStatement(selectStmt);
+			
+			ResultSet result = stmt.executeQuery();
+			
+			while(result.next()){
+				String currentTrackId = result.getString("trackId");	
+				favs.add(currentTrackId);
+			}
+			
+			con.close();
+			return favs;
+		}
 	
 	public static boolean insertFavorite(String username, String trackId) throws SQLException{
 		Connection con = getConnection();
