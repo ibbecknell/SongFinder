@@ -43,7 +43,8 @@ public class SongInfoServlet extends BaseServlet{
 		PrintWriter out = prepareResponse(response);
 		
 		out.println(writeUserInfo(username)+writeHTML() + "<h3><center> Song Info </center></h3><br/><b>Artist:</b> " + artist + "<br/><b>Title:</b> " + title
-				+"<br/><b><center>Songs Similar to "+artist+":</center></b> <br/><table border=\"2px\" width=\"100%\">"
+				+"<br/><b><center>Songs Similar to "+artist+":</center></b> <br/><table>"
+//						+ " border=\"2px\" width=\"100%\">"
 						+ "<tr><th>Artist</th><th>Song Title</th></tr>");
 		writeSimilars(searchByArray, out);
 		out.println("</table>");
@@ -51,7 +52,8 @@ public class SongInfoServlet extends BaseServlet{
 		result = library.getJSONSearchByTitle(title);
 		searchByArray = (JSONArray)result.get("similars");
 		
-		out.println("<br/><b><center>Songs Similar to "+title+":</center></b><br/><table border=\"2px\" width=\"100%\">"
+		out.println("<br/><b><center>Songs Similar to "+title+":</center></b><br/><table> "
+//				+ "border=\"2px\" width=\"100%\">"
 						+ "<tr><th>Artist</th><th>Song Title</th></tr>");
 		writeSimilars(searchByArray, out);
 		out.println("</table>");

@@ -40,10 +40,19 @@ public class BaseServlet extends HttpServlet {
 
 	protected String writeHTML() {
 		String responseHtml = "<html>" + "<head><title>Song Finder</title>"
-				+ "<style> th{height: 80px} tr:hover {background-color: #141f1f}  a{color: #75a3a3;} body{ color: #75a3a3; margin: 25px; background-color: #0a0f0f; font: 15px Verdana, Geneva, sans-serif; } p {  padding-top: 1%; border-top: solid; border-top-width: 1px; border-top-color: #A9A9A9; }</style>"
-				+ "</head>" + "<body>" + "<h1><center>Song Finder</center></h1>"
+				+ "<style> "
+					+ "table{border-collapse: collapse; width: 100%;}"
+					+ "th{height: 60px} "
+					+ "tr:hover {background-color: #141f1f}"
+					+ "tr:nth-child(even){background-color: #1f2e2e}"
+					+ "a{color: #75a3a3;} "
+//					+ "input[type=\"text\"] { width: 200px;}"
+					+ "body{color: #75a3a3; margin: 25px; background-color: #0a0f0f; font: 17px Verdana, Geneva, sans-serif; } "
+					+ "p {padding-top: 1%; border-top: solid; border-top-width: 1px; border-top-color: #A9A9A9; }"
+				+ "</style>"
+				+ "</head>" + "<body>" + "<h1><center>Song Finder</center></h1> "
+				+ "<center>Welcome to song finder! Search for an artist, song title, or tag and we will give you a list of similar songs you might like.</center><br/>"
 				+ "<form action=\"songs\" method=\"get\">"
-				+ "Welcome to song finder! Search for an artist, song title, or tag and we will give you a list of similar songs you might like.<br/>"
 				+ "<p>Search Type: "
 				+ "<select name = \"queryType\"><optgroup><option value = \"artist\">Artist</option><option value = \"title\">Song Title</option><option value = \"tag\">Tag</option></optgroup></select>"
 				+" Query: <input type=\"text\" name=\"songquery\"> "
@@ -55,17 +64,19 @@ public class BaseServlet extends HttpServlet {
 	}
 	
 	protected String writeUserInfo(String name){
-		String responseHtml ="<style> div { position: absolute; right: 50px; width: 300px; padding: 0px;}</style><div>Hello, "+ name + "! | " +writeLogout()+ writeDropdown()+ "</div>";
+		String responseHtml ="<style> .info { position: absolute; right: 50px; width: 300px; padding: 0px;}</style><div class=\"info\"><br/>Hello, "+ name + "! "+ "</div><br/>" + writeDropdown();
+//	+writeLogout()+ writeDropdown()+ "</div>";
 //		+writeFavs() + "</div>";
 		return responseHtml;
 	}
 	
 //	http://www.w3schools.com/css/css_dropdowns.asp
 	protected String writeDropdown(){
-		String responseHtml = "<style>.dropbtn {"
+		String responseHtml = 
+									"<style>.dropbtn {"
 											+"background-color: #75a3a3;"
 										    + "color: 0a0f0f;"
-											+ "width: 220px;"
+											+ "width: 150px;"
 										    + "height: 40px"
 										    + "padding: 14px;"
 										    +"font-size: 14px;"
@@ -76,39 +87,46 @@ public class BaseServlet extends HttpServlet {
 									  +".dropdown {"
 									    	+"position: relative;"
 									    	+"display: inline-block;"
+									    	+"top: 50px"
+									    	+"font-size: 14px;"
 										+"}"
 									
 									+ ".dropdown-content {"
+										+"right: 0;"
 									    +"display: none;"
 									    +"position: absolute;"
-									    +"background-color: #ccc6b3"
+									    +"background-color: #75a3a3"
 									    +"min-width: 160px;"
+									    +"font-size: 14px;"
 									    +"box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);"
 									+"}"
 									
 									+".dropdown-content a {"
-									    +"color: #75a3a3;"
+									    +"color: 0a0f0f;"
 									    +"padding: 12px 16px;"
+									    +"height: 40px"
+									    +"font-size: 14px"
 									    +"text-decoration: none;"
 									    +"display: block;"
 									+"}"
 									
-									+".dropdown-content a:hover {background-color: #f1f1f1}"
+									+".dropdown-content a:hover {background-color: #0a0f0f; color: #75a3a3;}"
 									
 									+".dropdown:hover .dropdown-content {"
 									    +"display: block;"
+									    +"background-color: #75a3a3"
 									+"}"
 									
 									+".dropdown:hover.dropbtn {"
-									    +"background-color: #f5f4f0;"
+									    +"background-color: #1f2e2e"
 									+"}"
 								+"</style>"
-							+"<div class=\"dropdown\">"
+							+"<div class=\"dropdown\" style=\"float: right\">"
 							+"<button class=\"dropbtn\">User Options</button>"
 							+"<div class=\"dropdown-content\">"
 								+ "<a href=\"favs_list\">Go to Favorites List</a>"
 								+ "<a href=\"update_password\">Update Password</a>"
-//								+"<a href=\"#\">Link 3</a>"
+								+"<a href=\"logout\">Logout</a>"
 							+"</div>"
 							+"</div>";
 		return responseHtml;

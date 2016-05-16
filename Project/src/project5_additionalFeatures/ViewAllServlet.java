@@ -52,7 +52,8 @@ public class ViewAllServlet extends BaseServlet{
 			}	
 
 			responseHtml = " Here is a complete list of songs sorted Alphabetically by Artist!"
-					+ "</br><br/><table border=\"2px\" width=\"100%\">"
+					+ "</br><br/><table>"
+//					+ "border=\"2px\" width=\"100%\">"
 					+ "<tr><th>Artist</th></tr>";
 		}
 		else if(request.getParameter("sortBy").equals("playcount")){
@@ -66,7 +67,8 @@ public class ViewAllServlet extends BaseServlet{
 			}	
 
 			responseHtml = " Here is a complete list of songs sorted by the Artist's Playcount!"
-					+ "</br><br/><table border=\"2px\" width=\"100%\">"
+					+ "</br><br/><table> "
+//					+ "border=\"2px\" width=\"100%\">"
 					+ "<tr><th>Artist</th></tr>";
 		}
 

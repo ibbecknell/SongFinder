@@ -89,7 +89,8 @@ public class SongsServlet extends BaseServlet {
 		if (hasQuery) {
 			if (result != null) {
 				responseHtml = " Here are some songs you might like!"
-						+ "</br><br/><table border=\"2px\" width=\"100%\">"
+						+ "</br><br/><table> "
+//						+ "border=\"2px\" width=\"100%\">"
 						+ "<tr><th>Artist</th><th>Song Title</th><th>Favorite</th></tr>";
 
 				try {
