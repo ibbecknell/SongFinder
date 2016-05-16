@@ -3,6 +3,7 @@ package project3p2_webInterface;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -32,11 +33,16 @@ public class SongsServlet extends BaseServlet {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		
+		// retrieve the Music Library from the context
+		ThreadSafeMusicLibrary library = (ThreadSafeMusicLibrary) request.getServletContext().getAttribute("musiclibrary");
+		
 		if(request.getParameter("songquery") == null || request.getParameter("queryType") == null){
 			
 			writer.println(writeUserInfo(name) + headResponseHtml + "Invalid Search Request! Please Search again!");
 			return;
-		}
+		}else{
 		
 		boolean hasQuery = false;
 		String queryType = request.getParameter("queryType");
@@ -47,8 +53,6 @@ public class SongsServlet extends BaseServlet {
 		session.setAttribute(QUERYTYPE, queryType);
 		session.setAttribute(SONGQUERY, query);
 		
-		// retrieve the Music Library from the context
-		ThreadSafeMusicLibrary library = (ThreadSafeMusicLibrary) request.getServletContext().getAttribute("musiclibrary");
 		JSONObject result = new JSONObject();
 		JSONArray searchByArray = new JSONArray();
 		
@@ -100,32 +104,29 @@ public class SongsServlet extends BaseServlet {
 		}
 
 		writer.println(writeUserInfo(name)+headResponseHtml + responseHtml);
-
+		}
 	}
 
-	private String getArray(String name, JSONArray students, String responseHTML, HttpServletRequest request, HttpServletResponse response) throws SQLException {
-//TODO: students is not an appropriate variable name.		
-		for (int i = 0; i < students.size(); i++) {
-			JSONObject student = (JSONObject) students.get(i);
-			responseHTML = responseHTML.concat("<tr><td>" + (String) student.get("artist").toString() + "</td><td>"
-					+ (String) student.get("title").toString() + "</td><td><center>"+ verifyFav(name, student.get("title").toString(), student.get("trackId").toString()) + "</center></td></tr>");
+	private String getArray(String name, JSONArray similars, String responseHTML, HttpServletRequest request, HttpServletResponse response) throws SQLException {
+		ArrayList<String>favsList = DBHelper.getFavorites(name);
+		for (int i = 0; i < similars.size(); i++) {
+			JSONObject similar = (JSONObject) similars.get(i);
+			responseHTML = responseHTML.concat("<tr><td>" + (String) similar.get("artist").toString() + "</td><td>"
+					+ "<a href=\"song_info?artist="+similar.get("artist")+"&title="+similar.get("title")+"\">"+(String) similar.get("title").toString() 
+					+ "</a></td><td><center>"
+					+ verifyFav(favsList,name, similar.get("title").toString(), similar.get("trackId").toString()) + "</center></td></tr>");
 		}
 		return responseHTML;
 	}
 	
-	private String verifyFav(String username, String title, String trackId){
+	private String verifyFav(ArrayList<String>fav, String username, String title, String trackId){
 		String response= "<a id = \"link\" href=\"user_favorites?title="+title+"&trackId="+trackId+"\">Add to Favs!</a>";
-		try {
-			if(DBHelper.verifyFav(username, trackId)){
-				
-				response = "Liked!";
-			} else {
-				
-				response = "<a id = \"link\" href=\"user_favorites?title="+title+"&trackId="+trackId+"\">Add to Favs!</a>";
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		if(fav.contains(trackId)){
+			
+			response = "Liked!";
+		} else {
+			
+			response = "<a id = \"link\" href=\"user_favorites?title="+title+"&trackId="+trackId+"\">Add to Favs!</a>";
 		}
 		return response;
 	}

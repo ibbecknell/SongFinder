@@ -33,6 +33,7 @@ public class UserFavServlet extends BaseServlet{
 				response.sendRedirect(response.encodeRedirectURL("/?" + STATUS + "=" + NOT_LOGGED_IN));
 				return;
 			}else if(name != null && trackId != null && !DBHelper.verifyFav(name, trackId)){
+//				System.out.println("inserting " + trackId);
 				DBHelper.insertFavorite(name, trackId);
 				response.sendRedirect(response.encodeRedirectURL("/songs?queryType="+querytype+"&songquery="+songquery));
 				return;
@@ -64,7 +65,7 @@ public class UserFavServlet extends BaseServlet{
 			}
 		}
 		
-		JSONArray favs = null;
+		ArrayList<String> favs = null;
 		try {
 			favs = DBHelper.getFavorites(name);
 		} catch (SQLException e1) {
@@ -92,14 +93,14 @@ public class UserFavServlet extends BaseServlet{
 
 	}
 	
-	private String readFavs(ArrayList<JSONObject> favs, String responseHTML, HttpServletRequest request, HttpServletResponse response) {
+	private String readFavs(ArrayList<String> favs, String responseHTML, HttpServletRequest request, HttpServletResponse response) {
 		ThreadSafeMusicLibrary book = (ThreadSafeMusicLibrary) request.getServletContext().getAttribute("musiclibrary");
 
 		
 		for(int i = 0; i< favs.size(); i++){
 			
 			JSONObject result = new JSONObject();
-			result = book.searchById(favs.get(i).get("trackId").toString());
+			result = book.searchById(favs.get(i));
 
 			responseHTML = responseHTML.concat("<tr><td>" + (String) result.get("artist").toString() + "</td><td>"
 					+ (String) result.get("title").toString() + "</td><td>"
@@ -111,9 +112,7 @@ public class UserFavServlet extends BaseServlet{
 	
 	private void removeFav(String username, String trackId){
 		try {
-			if(!DBHelper.removeFav(username, trackId)){
-			} else {
-			}
+			DBHelper.removeFav(username, trackId);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

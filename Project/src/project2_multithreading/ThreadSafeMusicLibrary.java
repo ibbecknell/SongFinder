@@ -1,6 +1,8 @@
 package project2_multithreading;
 import java.nio.file.Path;
+import java.util.ArrayList;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import project1_librarybuilding.MusicLibrary;
@@ -32,6 +34,16 @@ public class ThreadSafeMusicLibrary extends MusicLibrary {
 		lock.lockWrite();
 		super.addSong(song);
 		lock.unlockWrite();
+	}
+	
+	@Override
+	public ArrayList<String> getArtists(){
+		try{
+			lock.lockRead();
+			return super.getArtists();
+		} finally {
+			lock.unlockRead();
+		}
 	}
 
 	@Override
@@ -91,6 +103,15 @@ public class ThreadSafeMusicLibrary extends MusicLibrary {
 		}
 	}
 
+	@Override
+	public JSONArray getSongsByArtist(){
+		try{
+			lock.lockRead();
+			return super.getSongsByArtist();
+		} finally {
+			lock.unlockRead();
+		}
+	}
 	/******************* METHODS FOR DEBUGGING ***********************/
 	@Override
 	/**

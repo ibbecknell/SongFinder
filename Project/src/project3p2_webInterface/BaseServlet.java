@@ -46,8 +46,11 @@ public class BaseServlet extends HttpServlet {
 				+ "Welcome to song finder! Search for an artist, song title, or tag and we will give you a list of similar songs you might like.<br/>"
 				+ "<p>Search Type: "
 				+ "<select name = \"queryType\"><optgroup><option value = \"artist\">Artist</option><option value = \"title\">Song Title</option><option value = \"tag\">Tag</option></optgroup></select>"
-				+ " Query: <input type=\"text\" name=\"songquery\"> "
-				+ "<input type=\"submit\" value=\"Submit\"></form></p>";
+				+" Query: <input type=\"text\" name=\"songquery\"> "
+				+ "<input type=\"submit\" value=\"Submit\"></form></p>"
+				+"<form action=\"view_all\" method=\"post\">"
+				+ " View All Artists : <select name = \"sortBy\"><optgroup><option value = \"artist\">Alphabetically by Artist</option><option value = \"playcount\">By Playcount</option></optgroup></select>"
+				+ "<input type=\"submit\" value=\"View All\"></form></p>";
 		return responseHtml;
 	}
 	

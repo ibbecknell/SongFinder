@@ -76,9 +76,10 @@ public class DBHelper {
 		// format "jdbc:mysql://[hostname][:port]/[dbname]"
 		//note: if connecting through an ssh tunnel make sure to use 127.0.0.1 and
 		//also to that the ports are set up correctly
-		String host = "sql.cs.usfca.edu";
+//		String host = "sql.cs.usfca.edu";
+		String host = "127.0.0.1";
 		String port = "3306";
-		String urlString = "jdbc:mysql://" + host + ":" + port + "/"+db;
+		String urlString = "jdbc:mysql://" + host + ":" + port + "/"+db+"?useUnicode=true&characterEncoding=UTF-8";
 		Connection con = DriverManager.getConnection(urlString,
 				username,
 				password);
@@ -88,9 +89,9 @@ public class DBHelper {
 
 
 //TODO: consider modifying to return a list of Strings (Array list of track id)
-	public static JSONArray getFavorites(String username) throws SQLException{
+	public static ArrayList<String> getFavorites(String username) throws SQLException{
 		
-		JSONArray favs = new JSONArray();
+		ArrayList<String> favs = new ArrayList<String>();
 		Connection con = getConnection();
 		
 		String selectStmt = "SELECT * FROM favorites where username = \"" + username+"\"";
@@ -100,15 +101,80 @@ public class DBHelper {
 		ResultSet result = stmt.executeQuery();
 		
 		while(result.next()){
-			String currentTrackId = result.getString("trackId");
-			
-			JSONObject userFavs = new JSONObject();
-			userFavs.put("trackId", currentTrackId );
-			favs.add(userFavs);
+			String currentTrackId = result.getString("trackId");	
+			favs.add(currentTrackId);
 		}
 		
 		con.close();
 		return favs;
+	}
+	
+	public static boolean verifyArtist(JSONObject obj) throws SQLException  {
+		boolean hasArtist = false;
+		Connection con = getConnection();
+		String selectStmt = "SELECT * FROM artist";
+		
+		PreparedStatement stmt = con.prepareStatement(selectStmt);
+		
+		ResultSet result = stmt.executeQuery();
+		
+		while(result.next()){
+			String currentName = (String)result.getString("name");
+			if(currentName.equals(obj.get("name"))){
+				hasArtist = true;
+				con.close();
+				return hasArtist;
+			}
+		}
+		con.close();
+		return hasArtist;
+		
+	}
+	
+	public static void insertArtist(JSONObject obj) throws SQLException{
+		if(verifyArtist(obj)){
+			return;
+		}
+		Connection con = getConnection();
+		
+		String selectStmt = "SELECT * FROM artist";
+		
+		PreparedStatement stmt = con.prepareStatement(selectStmt);
+		
+		ResultSet result = stmt.executeQuery();
+
+		
+//		while(result.next()){
+////			System.out.println(result);
+//			String artistName =result.getString("name");
+//			int artistListeners = result.getInt("listeners");
+//			int artistPlaycount = result.getInt("playcount");
+//			String artistBio = result.getString("bio");
+//			
+//			System.out.printf("name: %s, listeners: %s, playcount: %s, bio: %s", artistName, artistListeners, artistPlaycount, artistBio);
+//		}
+		
+		PreparedStatement updateStmt = con.prepareStatement("INSERT INTO artist (name, listeners, playcount, bio) VALUES (?, ?, ?, ?);");
+		updateStmt.setString(1, obj.get("name").toString());
+		updateStmt.setInt(2, Integer.parseInt(obj.get("listeners").toString()));
+		updateStmt.setInt(3, Integer.parseInt(obj.get("playcount").toString()));
+		updateStmt.setString(4, obj.get("bio").toString());
+		
+//		System.out.println();
+		updateStmt.execute();
+//		System.out.println("\n*****\n");
+		
+		result = stmt.executeQuery();
+		
+//		while(result.next()){
+//			String artistName =result.getString("name");
+//			int artistListeners = result.getInt("listeners");
+//			int artistPlaycount = result.getInt("playcount");
+//			String artistBio = result.getString("bio");
+//			
+//			System.out.printf("name: %s, listeners: %s, playcount: %s, bio: %s\n", artistName, artistListeners, artistPlaycount, artistBio);
+//		}
+		con.close();
 	}
 	
 	public static boolean insertFavorite(String username, String trackId) throws SQLException{

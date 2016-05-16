@@ -12,6 +12,7 @@ import org.eclipse.jetty.servlet.ServletContextHandler;
 import project1_librarybuilding.MusicLibraryBuilder;
 import project2_multithreading.ThreadSafeMusicLibrary;
 import project4_database.LoginServlet;
+import project5_additionalFeatures.ViewAllServlet;
 import project4_database.*;
 
 public class SongFinderServer {
@@ -70,6 +71,10 @@ public class SongFinderServer {
 		servhandler.addServlet(LogoutServlet.class, "/logout");
 		
 		servhandler.addServlet(UserFavServlet.class, "/user_favorites");
+		
+		servhandler.addServlet(SongInfoServlet.class, "/song_info");
+		
+		servhandler.addServlet(ViewAllServlet.class, "/view_all");
 		
 		// set the list of handlers for the server
 		server.setHandler(servhandler);

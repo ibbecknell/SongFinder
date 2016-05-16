@@ -155,6 +155,23 @@ public class MusicLibrary {
 		return obj;
 	}
 	
+	public JSONArray getSongsByArtist(){
+		JSONArray artistSongs = new JSONArray();
+		for(String s : artistMap.keySet()){
+			for(Song song : artistMap.get(s)){
+				artistSongs.add(song.toJSON());
+			}
+		}
+		return artistSongs;
+	}
+	
+	public ArrayList<String> getArtists(){
+		ArrayList<String> toReturn = new ArrayList<String>();
+		for(String s : this.artistMap.keySet()){
+			toReturn.add(s);
+		}
+		return toReturn;
+	}
 
 	/**
 	 * Add a song to the library. Adds a reference to the song object to all
