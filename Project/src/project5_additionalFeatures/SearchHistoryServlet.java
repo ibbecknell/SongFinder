@@ -23,12 +23,14 @@ public class SearchHistoryServlet extends BaseServlet{
 		String querytype = (String)session.getAttribute(QUERYTYPE);
 		String songquery = (String)session.getAttribute(SONGQUERY);
 		PrintWriter writer = prepareResponse(response);
-		String headResponseHtml = writeHTML();
 		String responseHtml=null;
 		
-		if(request.getParameter("clear_history") != null){
-			clearHistory(name);
-		}
+//		System.out.println("request.getParameter(\"clear_history\") = " +request.getParameter("clear_history"));
+		
+		
+//		if(request.getParameter("clear_history") != null){
+//			clearHistory(name);
+//		}
 		ArrayList<JSONObject> history = null;
 		try {
 			history = DBHelper.getQueriesHistory(name);
@@ -55,11 +57,23 @@ public class SearchHistoryServlet extends BaseServlet{
 			responseHtml = "<br/><table> "
 //					+ "border=\"2px\" width=\"100%\">"
 							+"<tr><th>Recently Searched</th><th>Type of Search</th></tr>";
-				responseHtml = readHistory(history, responseHtml, request, response) + "</table>"+ "<form action=\"search_history?clear_history=true\" method=\"get\"></br><input type=\"submit\" value=\"Clear Search History\"></form>" ;
+				responseHtml = readHistory(history, responseHtml, request, response) + "</table>"+ "<form action=\"search_history\" method=\"post\"></br><input type=\"submit\" value=\"Clear Search History\"></form>" ;
 		}
 		
 			
 		writer.println(responseHtml);
+	}
+	
+	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		HttpSession session = request.getSession();
+		String name = (String) session.getAttribute(USERNAME);
+		PrintWriter writer = prepareResponse(response);
+		clearHistory(name);
+		writer.println(writeUserInfo(name) + writeHTML() + "<br/> Your Search History is Empty");
+		
+		
+		return;
+
 	}
 	
 	private String readHistory(ArrayList<JSONObject> history, String responseHTML, HttpServletRequest request, HttpServletResponse response) {

@@ -49,7 +49,15 @@ public class LoginServlet extends BaseServlet{
 		}
 	}
 	private String writeLogin(){
-		String login = "<style>tr:hover {background-color: #141f1f} body{ color: #75a3a3; margin: 25px; background-color: #0a0f0f; font: 17px Verdana, Geneva, sans-serif; } </style><head><title>Song Finder</title></head>"
+		String login = "<style>input[type=submit] {background-color: #75a3a3;"
+										    + "color: 0a0f0f;"
+											+ "width: 150px;"
+										    + "height: 40px"
+										    + "padding: 14px;"
+										    +"font-size: 14px;"
+										    +"border: none;"
+										    +"cursor: pointer;}"
+										   +"tr:hover {background-color: #141f1f} body{ color: #75a3a3; margin: 25px; background-color: #0a0f0f; font: 17px Verdana, Geneva, sans-serif; } </style><head><title>Song Finder</title></head>"
 		+ "<h1><center> Welcome to Song Finder!</center></h1><br/>"
 		+"<h3><center>Please Enter your username and password, or register</center></h3>"
 		+"<center><form name=\"name\" action=\"verifyuser\" method=\"post\">"

@@ -12,7 +12,15 @@ import project3p2_webInterface.BaseServlet;
 import project4_database.DBHelper;
 
 public class UpdatePasswordServlet extends BaseServlet{
-	private String responseHtml = "<style>tr:hover {background-color: #141f1f} body{ color: #75a3a3; margin: 25px; background-color: #0a0f0f; font: 15px Verdana, Geneva, sans-serif; } </style><head><title>Song Finder</title></head>"
+	private String responseHtml = "<style>input[type=submit] {background-color: #75a3a3;"
+										    + "color: 0a0f0f;"
+											+ "width: 150px;"
+										    + "height: 40px"
+										    + "padding: 14px;"
+										    +"font-size: 14px;"
+										    +"border: none;"
+										    +"cursor: pointer;}"
+										    +"tr:hover {background-color: #141f1f} body{ color: #75a3a3; margin: 25px; background-color: #0a0f0f; font: 15px Verdana, Geneva, sans-serif; } </style><head><title>Song Finder</title></head>"
 			+ "<h1><center> Welcome to Song Finder!</center></h1><br/>"
 			+"<h3><center>Please Enter your old password and new password</center></h3>"
 			+"<center><form name=\"name\" action=\"update_password\" method=\"post\">"
@@ -23,6 +31,9 @@ public class UpdatePasswordServlet extends BaseServlet{
 			+"<br/>Re-Enter New Password:<br>"
 			+"<input type=\"password\" name=\"new_pw2\"/><br/>"
 			+"<br/><input type=\"submit\" value=\"Change Password\"/>"
+			+"</form>"
+			+"<form name = \"search\" action=\"login\" method=\"get\">"
+			+"<br/><input type=\"submit\" value=\"Back to Search\"/>"
 			+"</form>";
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException{

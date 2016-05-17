@@ -53,7 +53,7 @@ public class FavoritesListServlet extends BaseServlet{
 		writer.println(writeUserInfo(name) + writeHTML() + name +"'s Favorites List!</br>");
 		String responseHtml = "<br/><table> "
 //				+ "border=\"2px\" width=\"100%\">"
-						+ "<form action=\"user_favorites\" method=\"post\">"+"<tr><th>Artist</th><th>Song Title</th><th>Remove From Favorites</th></tr>";
+						+ "<form action=\"favs_list\" method=\"get\">"+"<tr><th>Artist</th><th>Song Title</th><th>Remove From Favorites</th></tr>";
 			responseHtml = readFavs(favs, responseHtml, request, response) + "</table>"+ "</br><input type=\"submit\" value=\"Remove Favorite(s)\"></form>" ;
 			
 		writer.println(responseHtml);

@@ -14,6 +14,14 @@ import project3p2_webInterface.BaseServlet;
 public class RegisterServlet extends BaseServlet{
 	String responseHtml = "<head>"
 			+ "<style> "
+			+"input[type=submit] {background-color: #75a3a3;"
+		    + "color: 0a0f0f;"
+			+ "width: 150px;"
+		    + "height: 40px"
+		    + "padding: 14px;"
+		    +"font-size: 14px;"
+		    +"border: none;"
+		    +"cursor: pointer;}"
 					+ "body{color: #75a3a3; margin: 25px; background-color: #0a0f0f; font: 17px Verdana, Geneva, sans-serif; } "
 					+ "p {padding-top: 1%; border-top: solid; border-top-width: 1px; border-top-color: #A9A9A9; }"
 				+ "</style>"
@@ -32,7 +40,7 @@ public class RegisterServlet extends BaseServlet{
 			+"<input type=\"password\" name=\"password1\"/><br/>"
 			+"<br/>Re-enter Password:"
 			+"<input type=\"password\" name=\"password2\"/><br/>"
-			+"<input type=\"submit\" value=\"Register New User\"/>"
+			+"<br/><input type=\"submit\" value=\"Register New User\"/>"
 			+"</form></center>";
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException{
