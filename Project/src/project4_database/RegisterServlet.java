@@ -12,7 +12,12 @@ import javax.servlet.http.HttpSession;
 import project3p2_webInterface.BaseServlet;
 
 public class RegisterServlet extends BaseServlet{
-	String responseHtml = "<head><title>New User Registration</title></head>"
+	String responseHtml = "<head>"
+			+ "<style> "
+					+ "body{color: #75a3a3; margin: 25px; background-color: #0a0f0f; font: 17px Verdana, Geneva, sans-serif; } "
+					+ "p {padding-top: 1%; border-top: solid; border-top-width: 1px; border-top-color: #A9A9A9; }"
+				+ "</style>"
+				+"<title>New User Registration</title></head>"
 			+"<h1><center> Welcome to Song Finder!</center></h1><br/>"
 			+"<h3><center>Please complete the form below</center></h3>"
 			
