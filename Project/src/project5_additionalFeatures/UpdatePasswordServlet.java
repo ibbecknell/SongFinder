@@ -67,12 +67,14 @@ public class UpdatePasswordServlet extends BaseServlet{
 		PrintWriter out = prepareResponse(response);
 		out.println(responseHtml);
 		try {
-			if(DBHelper.verifyUser(username, password) && !old_PW.equals(newPW1) && newPW1.equals(newPW2) && !old_PW.isEmpty() && !newPW1.isEmpty() && !newPW2.isEmpty()){
+			if(DBHelper.verifyUser(username, password) && DBHelper.verifyUser(username, old_PW)&&!old_PW.equals(newPW1) && newPW1.equals(newPW2) && !old_PW.isEmpty() && !newPW1.isEmpty() && !newPW2.isEmpty()){
 				System.out.println("updating password");
 				DBHelper.updatePassword(username, newPW1);
 				session.setAttribute(PASSWORD, newPW1);
 				response.sendRedirect(response.encodeRedirectURL("/search"));
 				return;
+			}else if(!DBHelper.verifyUser(username, old_PW)){
+				out.println("<mark class=\"yellow\">Old Password is invalid!</mark><br/>");
 			} else if(old_PW.equals(newPW1)){
 				out.println("<mark class=\"yellow\">Enter a new password!</mark><br/>");
 			} else if(!newPW1.equals(newPW2)){

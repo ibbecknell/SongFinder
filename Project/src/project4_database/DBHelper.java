@@ -50,6 +50,8 @@ public class DBHelper {
 //		con.close();
 //	}
 	
+	
+	
 	public static boolean verifyHistory(String username) throws SQLException{
 		boolean hasHistory = false;
 		Connection con = getConnection();
@@ -178,8 +180,8 @@ public class DBHelper {
 		// format "jdbc:mysql://[hostname][:port]/[dbname]"
 		//note: if connecting through an ssh tunnel make sure to use 127.0.0.1 and
 		//also to that the ports are set up correctly
-		String host = "sql.cs.usfca.edu";
-//		String host = "127.0.0.1";
+//		String host = "sql.cs.usfca.edu";
+		String host = "127.0.0.1";
 		String port = "3306";
 		String urlString = "jdbc:mysql://" + host + ":" + port + "/"+db+"?useUnicode=true&characterEncoding=UTF-8";
 		Connection con = DriverManager.getConnection(urlString,
