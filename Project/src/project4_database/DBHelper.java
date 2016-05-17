@@ -50,24 +50,105 @@ public class DBHelper {
 //		con.close();
 //	}
 	
+	public static boolean verifyHistory(String username) throws SQLException{
+		boolean hasHistory = false;
+		Connection con = getConnection();
+		String selectStmt = "SELECT * FROM search_history";
+		
+		PreparedStatement stmt = con.prepareStatement(selectStmt);
+		
+		ResultSet result = stmt.executeQuery();
+		
+		while(result.next()){
+			String currentName = (String)result.getString("username");
+			if(currentName.equals(username)){
+				hasHistory = true;
+				con.close();
+				return hasHistory;
+			}
+		}
+		con.close();
+		return hasHistory;
+	}
+	
+	public static boolean clearHistory(String username) throws SQLException{
+		Connection con = getConnection();
+		
+		if(verifyHistory(username)){
+//			String selectStmt = "SELECT * FROM  .search_history where ";
+
+				PreparedStatement updateStmt = con.prepareStatement("DELETE FROM search_history WHERE username = ?;" );
+				updateStmt.setString(1,username);
+				updateStmt.execute();
+			
+			con.close();
+			return true;
+		}
+		con.close();
+		return false;
+	}
+	
+	
+	
+	public static ArrayList<JSONObject> getQueriesHistory(String username) throws SQLException{
+		ArrayList<JSONObject>queries = new ArrayList<JSONObject>();
+		Connection con = getConnection();
+		
+		String selectStmt = "SELECT * FROM search_history where username = \"" + username + "\" order by search_order DESC";
+		PreparedStatement stmt = con.prepareStatement(selectStmt);
+		
+		ResultSet result = stmt.executeQuery();
+		
+		while(result.next()){
+			int search_order = result.getInt("search_order");
+			String query = result.getString("query");
+			String queryType = result.getString("queryType");
+			JSONObject obj = new JSONObject();
+			obj.put("order", search_order);
+			obj.put("query", query);
+			obj.put("queryType", queryType);
+			
+			queries.add(obj);
+			
+		}
+		
+		con.close();
+		return queries;
+	}
+	
+	public static void insertQuery(String username, String query, String queryType) throws SQLException{
+		Connection con = getConnection();
+		int i = 0;
+		String selectStmt = "SELECT * FROM search_history where username = \"" + username + "\"";
+		
+		PreparedStatement stmt = con.prepareStatement(selectStmt);
+		
+		ResultSet result = stmt.executeQuery();
+		
+		while(result.next()){
+			i++;
+		}
+		
+		PreparedStatement updateStmt = con.prepareStatement("INSERT INTO search_history (username, search_order, query, queryType) VALUES (?, ?, ?, ?);");
+		updateStmt.setString(1, username);
+		updateStmt.setInt(2, i+1);
+		updateStmt.setString(3, query);
+		updateStmt.setString(4, queryType);
+		
+		updateStmt.execute();
+		
+		con.close();
+	}
+	
 	public static void updatePassword(String username, String password)throws SQLException{
 		System.out.println("updating password for " + username);
 		Connection con = getConnection();
 		String selectStmt = "SELECT * FROM user ";
-		
-//		PreparedStatement stmt = con.prepareStatement(selectStmt);
-		
-//		String updateStmt = "UPDATE user SET password=" + password+"WHERE username =" + username; 
-//		PreparedStatement stmt = con.prepareStatement(selectStmt);
 
-//		ResultSet result = stmt.executeQuery();
-		
-//		while(result.next()){
 			PreparedStatement updateStmt = con.prepareStatement("UPDATE user SET password=? WHERE username =?" );
 			updateStmt.setString(1, password);
 			updateStmt.setString(2,username);
 			updateStmt.execute();
-//		}
 		con.close();
 	}
 	

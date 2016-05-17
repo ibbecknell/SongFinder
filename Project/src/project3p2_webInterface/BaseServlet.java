@@ -46,6 +46,7 @@ public class BaseServlet extends HttpServlet {
 					+ "tr:hover {background-color: #141f1f}"
 					+ "tr:nth-child(even){background-color: #1f2e2e}"
 					+ "a{color: #75a3a3;} "
+//					+ "button{background-color: #4CAF50; border: none; color: white; padding: 15px 32px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px 2px;cursor: pointer;}"
 //					+ "input[type=\"text\"] { width: 200px;}"
 					+ "body{color: #75a3a3; margin: 25px; background-color: #0a0f0f; font: 17px Verdana, Geneva, sans-serif; } "
 					+ "p {padding-top: 1%; border-top: solid; border-top-width: 1px; border-top-color: #A9A9A9; }"
@@ -126,7 +127,9 @@ public class BaseServlet extends HttpServlet {
 							+"<div class=\"dropdown-content\">"
 								+ "<a href=\"favs_list\">Go to Favorites List</a>"
 								+ "<a href=\"update_password\">Update Password</a>"
+								+"<a href=\"search_history\">Search History</a>"
 								+"<a href=\"logout\">Logout</a>"
+								
 							+"</div>"
 							+"</div>";
 		return responseHtml;

@@ -53,6 +53,13 @@ public class SongsServlet extends BaseServlet {
 		session.setAttribute(QUERYTYPE, queryType);
 		session.setAttribute(SONGQUERY, query);
 		
+		try {
+			DBHelper.insertQuery(name, query, queryType);
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
 		JSONObject result = new JSONObject();
 		JSONArray searchByArray = new JSONArray();
 		

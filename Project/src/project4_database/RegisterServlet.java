@@ -24,9 +24,9 @@ public class RegisterServlet extends BaseServlet{
 			+"<br/>Username:"
 			+"<input type=\"text\" name=\"username\"/><br/>"
 			+"<br/>Password:"
-			+"<input type=\"text\" name=\"password1\"/><br/>"
+			+"<input type=\"password\" name=\"password1\"/><br/>"
 			+"<br/>Re-enter Password:"
-			+"<input type=\"text\" name=\"password2\"/><br/>"
+			+"<input type=\"password\" name=\"password2\"/><br/>"
 			+"<input type=\"submit\" value=\"Register New User\"/>"
 			+"</form></center>";
 	
