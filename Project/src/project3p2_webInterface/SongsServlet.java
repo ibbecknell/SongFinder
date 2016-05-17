@@ -23,6 +23,10 @@ public class SongsServlet extends BaseServlet {
 		String password = (String) session.getAttribute(PASSWORD);
 		PrintWriter writer = prepareResponse(response);
 		String headResponseHtml = writeHTML();
+		// retrieve the Music Library from the context
+				ThreadSafeMusicLibrary library = (ThreadSafeMusicLibrary) request.getServletContext().getAttribute("musiclibrary");
+//		boolean isPrivate = false;
+//		System.out.println(request.getParameter("private").equals("true"));
 		//user is not logged in, redirect to login page
 		try {
 			if(name == null || !DBHelper.verifyUser(name, password)) {
@@ -33,15 +37,15 @@ public class SongsServlet extends BaseServlet {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+//		if(request.getParameter("private").equals("true")){
+//			isPrivate = true;
 		
-		
-		// retrieve the Music Library from the context
-		ThreadSafeMusicLibrary library = (ThreadSafeMusicLibrary) request.getServletContext().getAttribute("musiclibrary");
-		
-		if(request.getParameter("songquery") == null || request.getParameter("queryType") == null){
+//		}
+	if(request.getParameter("songquery") == null || request.getParameter("queryType") == null){
+//			if(request.getParameter("private"))
+				writer.println(writeUserInfo(name) + headResponseHtml + "Invalid Search Request! Please Search again!");
+				return;
 			
-			writer.println(writeUserInfo(name) + headResponseHtml + "Invalid Search Request! Please Search again!");
-			return;
 		}else{
 		
 		boolean hasQuery = false;
@@ -54,7 +58,9 @@ public class SongsServlet extends BaseServlet {
 		session.setAttribute(SONGQUERY, query);
 		
 		try {
-			DBHelper.insertQuery(name, query, queryType);
+//			if(isPrivate = false){
+				DBHelper.insertQuery(name, query, queryType);
+//			}
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();

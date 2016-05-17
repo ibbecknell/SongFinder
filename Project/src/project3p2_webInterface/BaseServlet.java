@@ -136,6 +136,7 @@ public class BaseServlet extends HttpServlet {
 								+ "<a href=\"favs_list\">Go to Favorites List</a>"
 								+ "<a href=\"update_password\">Update Password</a>"
 								+"<a href=\"search_history\">Search History</a>"
+//								+"<a href=\"songs?private=true\">Private Search</a>"
 								+"<a href=\"logout\">Logout</a>"
 								
 							+"</div>"
